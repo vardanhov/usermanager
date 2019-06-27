@@ -1,0 +1,22 @@
+.form-register input[type='text'] {
+    width: 200px;
+}
+.form-register select {
+    width: 200px;
+}
+.form-register .field-error {
+    text-align: right;
+    color: #e00;
+}
+
+.form-login input[type='text'] {
+    width: 200px;
+}
+.form-login select {
+    width: 200px;
+}
+.form-login .field-error {
+    text-align: right;
+    color: #e00;
+}
+
