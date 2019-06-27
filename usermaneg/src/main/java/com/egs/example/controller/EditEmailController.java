@@ -34,7 +34,6 @@ public class EditEmailController extends HttpServlet {
         String name = request.getParameter("oldEmail");
         String surname = request.getParameter("newEmail");
 
-
         UpdateUserRequest updateUserRequest = null;
         Map<String, String> fieldErrors = new HashMap<>();
         if (StringUtils.isEmpty(name)) {

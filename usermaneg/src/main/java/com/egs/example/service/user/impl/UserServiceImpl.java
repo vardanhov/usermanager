@@ -84,9 +84,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserToken createTokenForgotPassword(User user) {
         UserToken emailToken = new UserToken();
+        emailToken.setUserId(user.getId());
         emailToken.setType(TokenType.FORGOT_PASSWORD);
         emailToken.setValue(UUID.randomUUID().toString());
-        emailToken.setUserId(user.getId());
         return emailToken;
     }
 
@@ -144,6 +144,9 @@ public class UserServiceImpl implements UserService {
         UserToken userToken = createTokenForgotPassword(user);
         Map<TokenType, UserToken> tokens = new HashMap<>();
         tokens.put(TokenType.FORGOT_PASSWORD, userToken);
+        if (user.getTokens()!=null && user.getTokens().get(TokenType.FORGOT_PASSWORD)!=null)
+
+
         user.setTokens(tokens);
         try {
             userDao.addToken(userToken);

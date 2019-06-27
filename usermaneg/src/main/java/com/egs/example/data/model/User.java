@@ -19,7 +19,7 @@ public class User {
 
     private String surname;
 
-    public Map<TokenType, UserToken> tokens;
+    private Map<TokenType, UserToken> tokens;
 
     public User() {}
 

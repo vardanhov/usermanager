@@ -22,19 +22,6 @@
     </c:if>
 
     <table>
-    <c:if test="${not empty errors and errors.containsKey(\"oldPass\")}">
-        <tr>
-            <td colspan="2" class="field-error">
-                <c:out value="${errors.get(\"oldPass\")}"/>
-            </td>
-        </tr>
-    </c:if>
-    <tr>
-        <td>Old Password</td>
-        <td>
-            <input type="password" name="oldPass" value="<c:out value="${param.oldPass}"/>"/>
-        </td>
-    </tr>
     <c:if test="${not empty errors and errors.containsKey(\"newPass\")}">
         <tr>
             <td colspan="2" class="field-error">

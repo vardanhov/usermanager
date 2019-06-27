@@ -41,7 +41,6 @@ public class RegisterController extends HttpServlet {
             session.setAttribute("user", user);
             response.sendRedirect("/");
 
-
         } catch (EmailAlreadyExistException e) {
             Map<String, String> errors = new HashMap<>();
             errors.put("email", "Email already exists");
@@ -69,10 +68,10 @@ public class RegisterController extends HttpServlet {
         }
 
         String email = request.getParameter("email");
-
         if (!EmailValidation.valid(email)) {
             errors.put("email", "Try using valid email!");
         }
+
         if (StringUtils.isNotBlank(email)) {
             userRequest.setEmail(email.trim());
         } else {
