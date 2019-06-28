@@ -136,20 +136,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendEmail(String email) {
+    public void sendToken(String email) {
         User user = userDao.getByEmail(email);
         if (user == null) {
             throw new UserNotFoundException(email);
         }
         UserToken userToken = createTokenForgotPassword(user);
-        Map<TokenType, UserToken> tokens = new HashMap<>();
-        tokens.put(TokenType.FORGOT_PASSWORD, userToken);
-        if (user.getTokens()!=null && user.getTokens().get(TokenType.FORGOT_PASSWORD)!=null)
-
-
-        user.setTokens(tokens);
         try {
-            userDao.addToken(userToken);
+            if (user.getTokens() != null && user.getTokens().get(TokenType.FORGOT_PASSWORD) != null) {
+                userDao.updateToken(userToken);
+            } else {
+                userDao.addToken(userToken);
+            }
             emailSender.sendResetPassword(user.getEmail(), userToken.getValue());
             userDao.commit();
         } catch (Exception e) {
@@ -161,8 +159,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(String email, String password) {
-        userDao.updatePassword(email, password);
+    public void changePassword(String id, String password) {
+        userDao.updatePassword(id, password);
     }
 
     private void checkIfExistsByEmail(final String email) {

@@ -24,7 +24,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String UPDATE_STATUS = "UPDATE user SET status_id =? where id = ?";
 
-    private static final String UPDATE_PASSWORD = "UPDATE user SET password =? where email = ?";
+    private static final String UPDATE_PASSWORD = "UPDATE user SET password =? where id = ?";
 
     private static final String UPDATE_EMAIL = "UPDATE user SET email =? where id = ?";
 
@@ -39,6 +39,9 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     private static final String DELETE_ALL_USERS = "DELETE FROM USER";
 
     private static final String INSERT_USER_TOKEN = "INSERT INTO user_token (user_id, token_type_id, value) VALUES(?, ?, ?)";
+
+    private static final String UPDATE_USER_TOKEN = "UPDATE user_token SET value = ? WHERE user_id = ? AND token_type_id= ?";
+
 
 
     @Override
@@ -161,22 +164,21 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     }
 
     @Override
-    public User updatePassword(String email, String password) {
+    public User updatePassword(String id, String password) {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final User findedUser = getByEmail(email);
+        final User findedUser = findById(id);
 
         try {
             connection = ConnectionProvider.getInstance().getConnection();
 
             preparedStatement = connection.prepareStatement(UPDATE_PASSWORD);
-
             preparedStatement.setString(1, password);
-            preparedStatement.setString(2, findedUser.getEmail());
+            preparedStatement.setString(2, findedUser.getId());
 
             preparedStatement.executeUpdate();
-            final User result = getByEmail(email);
+            final User result = findById(id);
 
             return result;
         } catch (final SQLException ex) {
@@ -367,6 +369,29 @@ public class UserDaoImpl extends BaseDao implements UserDao {
         }
     }
 
+    @Override
+    public void updateToken(UserToken userToken) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = ConnectionProvider.getInstance().getConnection(false);
+            currentConnection.set(connection);
+
+            preparedStatement = connection.prepareStatement(UPDATE_USER_TOKEN);
+
+            preparedStatement.setString(1, userToken.getValue());
+            preparedStatement.setString(2, userToken.getUserId());
+            preparedStatement.setInt(3, userToken.getType().getValue());
+
+            preparedStatement.executeUpdate();
+
+        } catch (final SQLException ex) {
+            final String message = String.format("Something went wrong when trying to update: %s", userToken);
+            throw new DatabaseException(message, ex);
+        } finally {
+            close(preparedStatement);
+        }
+    }
     private static List<User> mapAsList(final ResultSet resultSet) throws SQLException {
         final List<User> users = new ArrayList<>();
         while (resultSet.next()) {

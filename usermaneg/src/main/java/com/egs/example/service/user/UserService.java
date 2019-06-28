@@ -26,7 +26,7 @@ public interface UserService {
 
      UserToken createToken(User user);
 
-    void sendEmail(String email);
+    void sendToken(String email);
 
     UserToken createTokenForgotPassword(User user);
 

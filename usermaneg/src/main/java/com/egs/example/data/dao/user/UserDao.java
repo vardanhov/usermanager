@@ -30,9 +30,11 @@ public interface UserDao {
 
     User updateEmail(User user);
 
-    User  updatePassword(String email, String password);
+    User  updatePassword(String id, String password);
 
     void addToken(UserToken userToken);
+
+    void updateToken(UserToken userToken);
 
     void commit();
 

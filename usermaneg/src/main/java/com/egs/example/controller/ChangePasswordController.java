@@ -22,14 +22,14 @@ public class ChangePasswordController extends HttpServlet {
                            HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
+        User user = (User) session.getAttribute("user");
         String newPass = request.getParameter("newPass");
         String confirmPass = request.getParameter("confirmPass");
         boolean check = initAndValidate(request, newPass, confirmPass);
 
         if (check) {
             if (newPass.equals(confirmPass)) {
-                userService.changePassword(email, newPass);
+                userService.changePassword(user.getId(), newPass);
                 session.setAttribute("message", "Password changed successfully");
                 request.getRequestDispatcher("/login-view").forward(request, response);
             }

@@ -29,7 +29,7 @@ public class SendEmailController extends HttpServlet {
                 request.getRequestDispatcher("/forgot-password-view").forward(request, response);
             } else {
                 request.setAttribute("message", "Link sent successfully ");
-                userService.sendEmail(user.getEmail());
+                userService.sendToken(user.getEmail());
                 request.getRequestDispatcher("/login-view").forward(request, response);
             }
         } else {
