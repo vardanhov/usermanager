@@ -32,20 +32,20 @@
         <tr>
             <td>Old Email</td>
             <td>
-                <input type="text" name="oldEmail" value="<c:out value="${param.email}"/>"/>
+                <input type="text" name="email" value="<c:out value="${param.email}"/>"/>
             </td>
         </tr>
-        <c:if test="${not empty errors and errors.containsKey(\"email\")}">
+        <c:if test="${not empty errors and errors.containsKey(\"newEmail\")}">
             <tr>
                 <td colspan="2" class="field-error">
-                    <c:out value="${errors.get(\"email\")}"/>
+                    <c:out value="${errors.get(\"newEmail\")}"/>
                 </td>
             </tr>
         </c:if>
         <tr>
             <td>New Email</td>
             <td>
-                <input type="text" name="newEmail" value="<c:out value="${param.email}"/>"/>
+                <input type="text" name="newEmail" value="<c:out value="${param.newEmail}"/>"/>
             </td>
         </tr>
         <tr>

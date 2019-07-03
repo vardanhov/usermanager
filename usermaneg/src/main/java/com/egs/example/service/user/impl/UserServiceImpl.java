@@ -90,6 +90,15 @@ public class UserServiceImpl implements UserService {
         return emailToken;
     }
 
+    @Override
+    public UserToken createTokenChangeEmail(User user) {
+        UserToken emailToken = new UserToken();
+        emailToken.setUserId(user.getId());
+        emailToken.setType(TokenType.EMAIL_CHANGE);
+        emailToken.setValue(UUID.randomUUID().toString());
+        return emailToken;
+    }
+
 
     @Override
     public User updateStatus(UpdateUserRequest updateUserRequest) {
@@ -163,6 +172,11 @@ public class UserServiceImpl implements UserService {
         userDao.updatePassword(id, password);
     }
 
+    @Override
+    public void changeEmail(String id, String newEmail) {
+        userDao.updateEmail(id, newEmail);
+    }
+
     private void checkIfExistsByEmail(final String email) {
         if (userDao.existsByEmail(email)) {
             throw new EmailAlreadyExistException(email);
@@ -170,7 +184,13 @@ public class UserServiceImpl implements UserService {
     }
 
 //    public static void main(String[] args) {
-//        List<Integer> ints = new ArrayList<>();
+//        List<? extends Number> ints = new ArrayList<>();
+//        ints = new ArrayList<Integer>();
+//
+//        List list = new ArrayList();
+//        list.add(1);
+//        list.add(new Object[]{});
+//
 //        ints.add(3); ints.add(5); ints.add(10);
 //        double sum = sum(ints);
 //        System.out.println("Sum of ints="+sum);

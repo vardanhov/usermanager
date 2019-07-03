@@ -51,7 +51,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: right">
-                    <input type="submit" value="Reset"/>
+                    <input type="submit" value="Change"/>
                 </td>
             </tr>
         </table>

@@ -95,6 +95,27 @@ public class SendEmail {
             throw new RuntimeException(e);
         }
     }
+    public void sendChangeEmail(String addressTo,String token) throws MailException {
+        try {
+            BodyPart messageBodyPart = new MimeBodyPart();
+            MimeMessage message = new MimeMessage(session);
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
+            message.setSubject("Change Email");
+
+            String url ="http://localhost:8080/confirm-change-email?token=" + token + "&email="+ addressTo;
+            String text = "Please  click the following link to change email <a href=\""+url+"\">Change Email</a>";
+            messageBodyPart.setContent(text, "text/html");
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+            System.out.println("message sent successfully");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void main(String[] args) {
         SendEmail userService = new SendEmail();

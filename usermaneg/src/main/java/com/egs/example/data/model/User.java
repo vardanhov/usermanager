@@ -13,6 +13,8 @@ public class User {
 
     private String email;
 
+    private String newEmail;
+
     private String password;
 
     private String name;
@@ -67,6 +69,10 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getNewEmail() { return newEmail; }
+
+    public void setNewEmail(String newEmail) { this.newEmail = newEmail; }
 
     public String getPassword() {
         return password;

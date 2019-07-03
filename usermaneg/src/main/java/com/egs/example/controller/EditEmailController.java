@@ -17,37 +17,39 @@ import java.util.Map;
 
 public class EditEmailController extends HttpServlet {
 
+    private final UserService userService = new UserServiceImpl();
+
     @Override
     protected void service(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.getAttribute("user");
-        User user =(User)session.getAttribute("user");
-        UpdateUserRequest updateUserRequest =initAndValidatePayload(request, user);
-        UserService userService = new UserServiceImpl();
-//        userService.update(updateUserRequest);
-        response.sendRedirect("/welcome");
+        User user = (User) session.getAttribute("user");
+        String email = request.getParameter("email");
+        String newEmail = request.getParameter("newEmail");
+        boolean check = validate(request, email, newEmail);
+        if(check){
+            userService.changeEmail(user.getId(), newEmail);
+            response.sendRedirect("/welcome");
+        }
+
     }
 
-    private UpdateUserRequest initAndValidatePayload(HttpServletRequest request, User user) {
+    private boolean validate(HttpServletRequest request, String email, String newEmail ) {
 
-        String name = request.getParameter("oldEmail");
-        String surname = request.getParameter("newEmail");
 
-        UpdateUserRequest updateUserRequest = null;
-        Map<String, String> fieldErrors = new HashMap<>();
-        if (StringUtils.isEmpty(name)) {
-            fieldErrors.put("oldEmail", "Old Email is required");
+
+        Map<String, String> errors = new HashMap<>();
+        if (StringUtils.isEmpty(email)) {
+            errors.put("email", "Old Email is required");
         }
-
-        if (StringUtils.isEmpty(surname)) {
-            fieldErrors.put("newEmail", "New Email is required");
+        if (StringUtils.isEmpty(newEmail)) {
+            errors.put("newEmail", "New Email is required");
         }
-        if (fieldErrors.isEmpty()) {
-            updateUserRequest = new UpdateUserRequest(user.getId(),user.getProfile(),  user.getStatus(), name, surname );
-
+        if (!errors.isEmpty()) {
+            request.setAttribute("errors", errors);
+            return false;
         }
-        request.setAttribute("errors", fieldErrors);
-        return updateUserRequest;
+        return true;
     }
 }

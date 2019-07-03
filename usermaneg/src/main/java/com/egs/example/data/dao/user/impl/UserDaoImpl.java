@@ -26,7 +26,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String UPDATE_PASSWORD = "UPDATE user SET password =? where id = ?";
 
-    private static final String UPDATE_EMAIL = "UPDATE user SET email =? where id = ?";
+    private static final String UPDATE_EMAIL = "UPDATE user SET new_email =? where id = ?";
 
     private static final String INSERT_USER = "INSERT INTO user (id, profile_id, status_id, email, password, name, surname) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
@@ -136,22 +136,22 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     }
 
     @Override
-    public User updateEmail(User user) {
+    public User updateEmail(String id, String newEmail) {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final User findedUser = findById(user.getId());
+        final User findedUser = findById(id);
 
         try {
             connection = ConnectionProvider.getInstance().getConnection();
 
             preparedStatement = connection.prepareStatement(UPDATE_EMAIL);
 
-            preparedStatement.setString(1, user.getEmail());
-            preparedStatement.setString(2, user.getId());
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, id);
 
             preparedStatement.executeUpdate();
-            final User result = findById(user.getId());
+            final User result = findById(id);
 
             return result;
         } catch (final SQLException ex) {

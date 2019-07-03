@@ -28,7 +28,7 @@ public interface UserDao {
 
     User updateStatus(User user);
 
-    User updateEmail(User user);
+    User updateEmail(String id, String newEmail);
 
     User  updatePassword(String id, String password);
 

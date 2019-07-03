@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChangePasswordController extends HttpServlet {
+public class ForgotPasswordController extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
 
     @Override
@@ -31,7 +31,7 @@ public class ChangePasswordController extends HttpServlet {
             if (newPass.equals(confirmPass)) {
                 userService.changePassword(user.getId(), newPass);
                 session.setAttribute("message", "Password changed successfully");
-                request.getRequestDispatcher("/login-view").forward(request, response);
+                response.sendRedirect("/welcome");
             }
             if (!newPass.equals(confirmPass)) {
                 request.setAttribute("message", "New  password field and Confirm password field must be match");
@@ -47,16 +47,16 @@ public class ChangePasswordController extends HttpServlet {
 
     boolean initAndValidate(HttpServletRequest request, String newPass, String confirmPass) {
         Map<String, String> errors = new HashMap<>();
+
         if (StringUtils.isBlank(newPass)) {
             errors.put("newPass", "New password is required");
-            return false;
         }
         if (StringUtils.isBlank(confirmPass)) {
             errors.put("confirmPass", "Confirm password is required");
-            return false;
         }
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
+            return false;
         }
         return true;
     }

@@ -30,6 +30,10 @@ public interface UserService {
 
     UserToken createTokenForgotPassword(User user);
 
+    UserToken createTokenChangeEmail(User user);
+
     void changePassword(String email, String password);
+
+    void changeEmail(String id, String password);
 
 }
