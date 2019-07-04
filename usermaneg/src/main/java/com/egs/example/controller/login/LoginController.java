@@ -1,4 +1,4 @@
-package com.egs.example.controller;
+package com.egs.example.controller.login;
 
 import com.egs.example.data.internal.Credential;
 import com.egs.example.data.model.User;

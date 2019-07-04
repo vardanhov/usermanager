@@ -1,4 +1,4 @@
-package com.egs.example.controller;
+package com.egs.example.controller.registration;
 
 
 import com.egs.example.data.model.TokenType;

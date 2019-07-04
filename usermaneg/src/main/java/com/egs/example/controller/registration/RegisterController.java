@@ -1,4 +1,4 @@
-package com.egs.example.controller;
+package com.egs.example.controller.registration;
 
 import com.egs.example.data.model.User;
 import com.egs.example.data.model.UserProfile;
@@ -46,7 +46,6 @@ public class RegisterController extends HttpServlet {
             errors.put("email", "Email already exists");
             request.getRequestDispatcher("/register-view").forward(request, response);
         }
-        // TODO
     }
 
     private CreateUserRequest initAndValidatePayload(HttpServletRequest request) {

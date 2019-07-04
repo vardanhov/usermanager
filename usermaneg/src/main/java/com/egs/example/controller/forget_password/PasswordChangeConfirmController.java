@@ -1,4 +1,5 @@
-package com.egs.example.controller;
+package com.egs.example.controller.forget_password;
+
 
 import com.egs.example.data.model.TokenType;
 import com.egs.example.data.model.User;
@@ -13,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class EmailChangeConfirmController extends HttpServlet {
+
+public class PasswordChangeConfirmController extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
 
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -29,7 +31,7 @@ public class EmailChangeConfirmController extends HttpServlet {
             if (user == null) {
                 session.setAttribute("message", "Invalid user for change password");
                 response.sendRedirect("/login-view");
-            } else if (user.getTokens() != null && token.equals(user.getTokens().get(TokenType.EMAIL_CHANGE).getValue())) {
+            } else if (user.getTokens() != null && token.equals(user.getTokens().get(TokenType.FORGOT_PASSWORD).getValue())) {
                 session.setAttribute("user", user);
                 response.sendRedirect("/change-password-view");
             } else {

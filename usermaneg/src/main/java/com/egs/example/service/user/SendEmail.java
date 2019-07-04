@@ -39,9 +39,8 @@ public class SendEmail {
                     }
                 });
             } catch (FileNotFoundException e) {
-                System.out.println("File not found");            }
-            catch(Exception ex)
-            {
+                System.out.println("File not found");
+            } catch (Exception ex) {
 
             }
         }
@@ -52,15 +51,15 @@ public class SendEmail {
     }
 
 
-    public void sendEmailConfirmation(String addressTo,String token) throws MailException {
+    public void sendEmailConfirmation(String addressTo, String token) throws MailException {
         try {
             BodyPart messageBodyPart = new MimeBodyPart();
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
             message.setSubject("Registration");
 
-            String url ="http://localhost:8080/registration-confirm?token=" + token + "&email="+ addressTo;
-            String text = "Please confirm you registration by clicking the following link <a href=\""+url+"\">confirm email</a>";
+            String url = "http://localhost:8080/registration-confirm?token=" + token + "&email=" + addressTo;
+            String text = "Please confirm you registration by clicking the following link <a href=\"" + url + "\">confirm email</a>";
             messageBodyPart.setContent(text, "text/html");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
@@ -74,15 +73,15 @@ public class SendEmail {
         }
     }
 
-    public void sendResetPassword(String addressTo,String token) throws MailException {
+    public void sendResetPassword(String addressTo, String token) throws MailException {
         try {
             BodyPart messageBodyPart = new MimeBodyPart();
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
             message.setSubject("Reset Password");
 
-            String url ="http://localhost:8080/confirm-change-password?token=" + token + "&email="+ addressTo;
-            String text = "Please  click the following link to change password <a href=\""+url+"\">Change Password</a>";
+            String url = "http://localhost:8080/confirm-change-password?token=" + token + "&email=" + addressTo;
+            String text = "Please  click the following link to change password <a href=\"" + url + "\">Change Password</a>";
             messageBodyPart.setContent(text, "text/html");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
@@ -95,15 +94,16 @@ public class SendEmail {
             throw new RuntimeException(e);
         }
     }
-    public void sendChangeEmail(String addressTo,String token) throws MailException {
+
+    public void sendChangeEmail(String addressTo, String token) throws MailException {
         try {
             BodyPart messageBodyPart = new MimeBodyPart();
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
             message.setSubject("Change Email");
 
-            String url ="http://localhost:8080/confirm-change-email?token=" + token + "&email="+ addressTo;
-            String text = "Please  click the following link to change email <a href=\""+url+"\">Change Email</a>";
+            String url = "http://localhost:8080/confirm-change-email?token=" + token + "&email=" + addressTo;
+            String text = "Please  click the following link to change email <a href=\"" + url + "\">Change Email</a>";
             messageBodyPart.setContent(text, "text/html");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);

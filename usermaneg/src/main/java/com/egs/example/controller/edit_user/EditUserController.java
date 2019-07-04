@@ -1,4 +1,4 @@
-package com.egs.example.controller;
+package com.egs.example.controller.edit_user;
 
 import com.egs.example.data.model.User;
 import com.egs.example.service.user.UpdateUserRequest;

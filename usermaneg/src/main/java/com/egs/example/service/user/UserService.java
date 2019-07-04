@@ -36,4 +36,6 @@ public interface UserService {
 
     void changeEmail(String id, String password);
 
+    void sendTokenChangeEmail(User user ,String email);
+
 }

@@ -7,7 +7,7 @@
 
     <servlet>
         <servlet-name>RegisterController</servlet-name>
-        <servlet-class>com.egs.example.controller.RegisterController</servlet-class>
+        <servlet-class>com.egs.example.controller.registration.RegisterController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>LoginController</servlet-name>
-        <servlet-class>com.egs.example.controller.LoginController</servlet-class>
+        <servlet-class>com.egs.example.controller.login.LoginController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -52,7 +52,7 @@
 
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.egs.example.controller.LogoutController</servlet-class>
+        <servlet-class>com.egs.example.controller.login.LogoutController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
@@ -99,7 +99,7 @@
 
     <servlet>
         <servlet-name>EditUser</servlet-name>
-        <servlet-class>com.egs.example.controller.EditUserController</servlet-class>
+        <servlet-class>com.egs.example.controller.edit_user.EditUserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EditUser</servlet-name>
@@ -108,7 +108,7 @@
 
     <servlet>
         <servlet-name>EditEmail</servlet-name>
-        <servlet-class>com.egs.example.controller.EditEmailController</servlet-class>
+        <servlet-class>com.egs.example.controller.edit_email.EditEmailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EditEmail</servlet-name>
@@ -117,7 +117,7 @@
 
     <servlet>
         <servlet-name>EmailConfirm</servlet-name>
-        <servlet-class>com.egs.example.controller.EmailConfirmController</servlet-class>
+        <servlet-class>com.egs.example.controller.registration.EmailConfirmController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EmailConfirm</servlet-name>
@@ -135,7 +135,7 @@
 
     <servlet>
         <servlet-name>SendEmail</servlet-name>
-        <servlet-class>com.egs.example.controller.SendEmailController</servlet-class>
+        <servlet-class>com.egs.example.controller.forget_password.SendEmailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmail</servlet-name>
@@ -144,7 +144,7 @@
 
     <servlet>
         <servlet-name>PasswordChangeConfirm</servlet-name>
-        <servlet-class>com.egs.example.controller.PasswordChangeConfirmController</servlet-class>
+        <servlet-class>com.egs.example.controller.forget_password.PasswordChangeConfirmController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PasswordChangeConfirm</servlet-name>
@@ -153,7 +153,7 @@
 
     <servlet>
         <servlet-name>EmailChangeConfirm</servlet-name>
-        <servlet-class>com.egs.example.controller.EmailChangeConfirmController</servlet-class>
+        <servlet-class>com.egs.example.controller.edit_email.EmailChangeConfirmController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EmailChangeConfirm</servlet-name>
@@ -171,7 +171,7 @@
 
     <servlet>
         <servlet-name>ChangePassword</servlet-name>
-        <servlet-class>com.egs.example.controller.ForgotPasswordController</servlet-class>
+        <servlet-class>com.egs.example.controller.forget_password.ForgotPasswordController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ChangePassword</servlet-name>
@@ -180,7 +180,7 @@
 
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
-        <servlet-class>com.egs.example.controller.ResetPasswordController</servlet-class>
+        <servlet-class>com.egs.example.controller.edit_password.ResetPasswordController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>

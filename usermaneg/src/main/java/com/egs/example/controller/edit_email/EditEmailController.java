@@ -1,7 +1,6 @@
-package com.egs.example.controller;
+package com.egs.example.controller.edit_email;
 
 import com.egs.example.data.model.User;
-import com.egs.example.service.user.UpdateUserRequest;
 import com.egs.example.service.user.UserService;
 import com.egs.example.service.user.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -29,15 +28,12 @@ public class EditEmailController extends HttpServlet {
         String newEmail = request.getParameter("newEmail");
         boolean check = validate(request, email, newEmail);
         if(check){
-            userService.changeEmail(user.getId(), newEmail);
+            userService.sendTokenChangeEmail(user,newEmail);
             response.sendRedirect("/welcome");
         }
-
     }
 
     private boolean validate(HttpServletRequest request, String email, String newEmail ) {
-
-
 
         Map<String, String> errors = new HashMap<>();
         if (StringUtils.isEmpty(email)) {

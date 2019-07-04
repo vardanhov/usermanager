@@ -1,4 +1,4 @@
-package com.egs.example.controller;
+package com.egs.example.controller.login;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServlet;

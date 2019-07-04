@@ -168,6 +168,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void sendTokenChangeEmail(User user, String email) {
+
+        UserToken userToken = createTokenChangeEmail(user);
+        try {
+            if (user.getTokens() != null && user.getTokens().get(TokenType.EMAIL_CHANGE) != null) {
+                userDao.updateToken(userToken);
+            } else {
+                userDao.addToken(userToken);
+            }
+            userDao.setNewEmail(user.getId(), email);
+            emailSender.sendChangeEmail(email, userToken.getValue());
+            userDao.commit();
+        } catch (Exception e) {
+            userDao.rollback();
+            throw new DatabaseException();
+        } finally {
+            userDao.closeConnection();
+        }
+    }
+
+    @Override
     public void changePassword(String id, String password) {
         userDao.updatePassword(id, password);
     }
@@ -183,7 +204,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //        List<? extends Number> ints = new ArrayList<>();
 //        ints = new ArrayList<Integer>();
 //

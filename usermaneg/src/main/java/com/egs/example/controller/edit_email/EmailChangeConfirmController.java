@@ -1,5 +1,4 @@
-package com.egs.example.controller;
-
+package com.egs.example.controller.edit_email;
 
 import com.egs.example.data.model.TokenType;
 import com.egs.example.data.model.User;
@@ -14,33 +13,34 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
-public class PasswordChangeConfirmController extends HttpServlet {
+public class EmailChangeConfirmController extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
 
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         String email = request.getParameter("email");
         String token = request.getParameter("token");
-        boolean check = validate(email, token);
+     //   boolean check = validate(email, token);
 
-        if (check) {
-            User user = userService.getByEmail(email);
+        if (true) {
+
             if (user == null) {
-                session.setAttribute("message", "Invalid user for change password");
-                response.sendRedirect("/login-view");
-            } else if (user.getTokens() != null && token.equals(user.getTokens().get(TokenType.FORGOT_PASSWORD).getValue())) {
+                session.setAttribute("message", "Invalid user for change email");
+                response.sendRedirect("/edit-email-view");
+            } else if (user.getTokens() != null && token.equals(user.getTokens().get(TokenType.EMAIL_CHANGE).getValue())) {
+                userService.changeEmail(user.getId(), email);
                 session.setAttribute("user", user);
-                response.sendRedirect("/change-password-view");
+                response.sendRedirect("/welcome");
             } else {
                 session.setAttribute("message", "You must click link");
-                response.sendRedirect("/login-view");
+                response.sendRedirect("/edit-email-view");
             }
         } else {
-            session.setAttribute("message", "Invalid request for change password");
-            response.sendRedirect("/login-view");
+            session.setAttribute("message", "Invalid request for change email");
+            response.sendRedirect("/edit-email-view");
         }
     }
 

@@ -30,6 +30,8 @@ public interface UserDao {
 
     User updateEmail(String id, String newEmail);
 
+    User setNewEmail(String id, String newEmail);
+
     User  updatePassword(String id, String password);
 
     void addToken(UserToken userToken);

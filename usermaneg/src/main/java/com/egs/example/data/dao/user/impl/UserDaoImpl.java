@@ -26,7 +26,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String UPDATE_PASSWORD = "UPDATE user SET password =? where id = ?";
 
-    private static final String UPDATE_EMAIL = "UPDATE user SET new_email =? where id = ?";
+    private static final String UPDATE_EMAIL = "UPDATE user SET email = ? ,new_email =? where id = ?";
 
     private static final String INSERT_USER = "INSERT INTO user (id, profile_id, status_id, email, password, name, surname) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
@@ -42,6 +42,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String UPDATE_USER_TOKEN = "UPDATE user_token SET value = ? WHERE user_id = ? AND token_type_id= ?";
 
+    private static final String SET_NEW_EMAIL = "UPDATE user SET not_confirm_email =? where id = ?";
 
 
     @Override
@@ -148,7 +149,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             preparedStatement = connection.prepareStatement(UPDATE_EMAIL);
 
             preparedStatement.setString(1, newEmail);
-            preparedStatement.setString(2, id);
+            preparedStatement.setString(2, null);
+            preparedStatement.setString(3, id);
 
             preparedStatement.executeUpdate();
             final User result = findById(id);
@@ -162,6 +164,34 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             close(connection);
         }
     }
+
+    @Override
+    public User setNewEmail(String id, String newEmail) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        final User findedUser = findById(id);
+
+        try {
+            connection = currentConnection.get();
+            preparedStatement = connection.prepareStatement(SET_NEW_EMAIL);
+
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, id);
+
+            preparedStatement.executeUpdate();
+            final User result = findById(id);
+
+            return result;
+        } catch (final SQLException ex) {
+            final String message = String.format("Something went wrong when trying to update user email. User: %s", findedUser);
+            throw new DatabaseException(message, ex);
+        } finally {
+            close(preparedStatement);
+
+        }
+    }
+
 
     @Override
     public User updatePassword(String id, String password) {
