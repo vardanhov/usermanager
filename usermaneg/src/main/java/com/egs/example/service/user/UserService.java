@@ -38,4 +38,6 @@ public interface UserService {
 
     void sendTokenChangeEmail(User user ,String email);
 
+    List<User> getUsers();
+
 }

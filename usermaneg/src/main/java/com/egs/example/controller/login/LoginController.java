@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -39,8 +40,15 @@ public class LoginController extends HttpServlet {
         }
 
         if (user.getStatus() == UserStatus.ACTIVE) {
-            session.setAttribute("user",  user);
-            response.sendRedirect("welcome");
+            if (user.getProfile().getName().equals("User")){
+                session.setAttribute("user",  user);
+                response.sendRedirect("welcome");
+            }
+            if (user.getProfile().getName().equals("Admin")){
+                final List<User> users = userService.getUsers();
+                session.setAttribute("users", users);
+                response.sendRedirect("/users");
+            }
             return;
         }
         if (user.getStatus() == UserStatus.EMAIL_NOT_CONFIRMED) {

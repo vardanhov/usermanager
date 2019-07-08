@@ -51,6 +51,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>Users</servlet-name>
+        <jsp-file>/WEB-INF/pages/users.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Users</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.egs.example.controller.login.LogoutController</servlet-class>
     </servlet>
@@ -179,11 +188,20 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ResetPassword</servlet-name>
-        <servlet-class>com.egs.example.controller.edit_password.ResetPasswordController</servlet-class>
-    </servlet>
+    <servlet-name>ResetPassword</servlet-name>
+    <servlet-class>com.egs.example.controller.edit_password.ResetPasswordController</servlet-class>
+</servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/reset-password</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteUser</servlet-name>
+        <servlet-class>com.egs.example.controller.delete_user.DeleteUserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUser</servlet-name>
+        <url-pattern>/delete</url-pattern>
     </servlet-mapping>
 </web-app>

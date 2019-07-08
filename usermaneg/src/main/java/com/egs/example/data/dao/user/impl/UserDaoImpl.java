@@ -5,10 +5,7 @@ import com.egs.example.data.dao.exception.DatabaseException;
 import com.egs.example.data.dao.user.UserDao;
 import com.egs.example.data.dao.user.mapper.UserMapper;
 import com.egs.example.data.dao.util.ConnectionProvider;
-import com.egs.example.data.model.TokenType;
-import com.egs.example.data.model.User;
-import com.egs.example.data.model.UserStatus;
-import com.egs.example.data.model.UserToken;
+import com.egs.example.data.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,6 +17,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String DELETE_USER = "DELETE FROM user WHERE id =?";
 
+    private static final String DELETE_USER_TOKEN = "DELETE FROM user_token WHERE user_id =?";
+
     private static final String UPDATE_USER = "UPDATE user SET name = ?, surname = ? where id = ?";
 
     private static final String UPDATE_STATUS = "UPDATE user SET status_id =? where id = ?";
@@ -30,7 +29,9 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String INSERT_USER = "INSERT INTO user (id, profile_id, status_id, email, password, name, surname) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String GET_ALL_USER = "SELECT * FROM user";
+    private static final String GET_ALL = "SELECT * FROM user";
+
+    private static final String GET_ALL_USER = "SELECT * FROM user  where profile_id=?";
 
     private static final String GET_USER_BY_EMAIL = "SELECT * FROM user u LEFT JOIN  user_token ut ON u.id=ut.user_id  WHERE u.email = ? ";
 
@@ -237,6 +238,26 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             throw new DatabaseException(message, ex);
         } finally {
             close(preparedStatement);
+        }
+    }
+
+    @Override
+    public int deleteUserToken(final String id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = ConnectionProvider.getInstance().getConnection();
+
+            preparedStatement = connection.prepareStatement(DELETE_USER_TOKEN);
+
+            preparedStatement.setString(1, id);
+
+            return preparedStatement.executeUpdate();
+        } catch (final SQLException ex) {
+            final String message = String.format("Something went wrong when trying to delete token. User id: %s", id);
+            throw new DatabaseException(message, ex);
+        } finally {
+            close(preparedStatement);
             close(connection);
         }
     }
@@ -270,7 +291,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
         try {
             connection = ConnectionProvider.getInstance().getConnection();
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(GET_ALL_USER);
+            resultSet = statement.executeQuery(GET_ALL);
             return mapAsList(resultSet);
         } catch (final SQLException ex) {
             throw new DatabaseException("Something went wrong when trying to find all users.", ex);
@@ -280,6 +301,29 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             close(connection);
         }
     }
+
+    @Override
+    public List<User> getAllUsers(int value) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = ConnectionProvider.getInstance().getConnection();
+
+            preparedStatement = connection.prepareStatement(GET_ALL_USER);
+            preparedStatement.setInt(1, value);
+
+            resultSet = preparedStatement.executeQuery();
+
+            return UserMapper.mapAsList(resultSet);
+        } catch (final SQLException ex) {
+            throw new DatabaseException("Something went wrong when trying to find users.", ex);
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+        }
+    }
+
 
     @Override
     public boolean existsByEmail(final String email) {

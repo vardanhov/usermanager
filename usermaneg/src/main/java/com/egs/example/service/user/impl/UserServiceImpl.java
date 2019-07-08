@@ -4,10 +4,7 @@ import com.egs.example.data.dao.exception.DatabaseException;
 import com.egs.example.data.dao.user.UserDao;
 import com.egs.example.data.dao.user.impl.UserDaoImpl;
 import com.egs.example.data.internal.Credential;
-import com.egs.example.data.model.TokenType;
-import com.egs.example.data.model.User;
-import com.egs.example.data.model.UserStatus;
-import com.egs.example.data.model.UserToken;
+import com.egs.example.data.model.*;
 import com.egs.example.service.user.CreateUserRequest;
 import com.egs.example.service.user.SendEmail;
 import com.egs.example.service.user.UpdateUserRequest;
@@ -114,11 +111,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(final String id) {
-        int status = userDao.delete(id);
-        if (status != 1) {
-            throw new UserNotFoundException(id);
+
+            try {
+                userDao.deleteUserToken(id);
+                int status = userDao.delete(id);
+                if (status != 1) {
+                    throw new UserNotFoundException(id);
+                }
+                userDao.commit();
+            } catch (Exception e) {
+                userDao.rollback();
+                throw new DatabaseException();
+            } finally {
+                userDao.closeConnection();
+            }
         }
-    }
+
 
     @Override
     public User getById(final String id) {
@@ -186,6 +194,13 @@ public class UserServiceImpl implements UserService {
         } finally {
             userDao.closeConnection();
         }
+    }
+
+    @Override
+    public List<User> getUsers(){
+        int value = UserProfile.USER.getValue();
+        List<User> users = userDao.getAllUsers(value);
+          return users;
     }
 
     @Override

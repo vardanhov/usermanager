@@ -43,4 +43,8 @@ public interface UserDao {
     void rollback();
 
     void closeConnection();
+
+    List<User> getAllUsers(int value);
+
+    int deleteUserToken(final String id);
 }

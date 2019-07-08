@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
 
@@ -13,31 +15,44 @@ public class UserMapper {
     }
 
     public static User map(final ResultSet resultSet, boolean readTokens) throws SQLException {
-        User user = null;
+        return resultSet.next() ? mapUser(resultSet, readTokens) : null;
+    }
+
+    public static List<User> mapAsList(final ResultSet resultSet) throws SQLException {
+        return mapAsList(resultSet, false);
+    }
+
+    public static List<User> mapAsList(final ResultSet resultSet, boolean readTokens) throws SQLException {
+        final List<User> users = new ArrayList<>();
         while (resultSet.next()) {
-            if (user == null) {
-                user = new User();
-                user.setId(resultSet.getString("id"));
+            final User user = mapUser(resultSet, readTokens);
+            users.add(user);
+        }
+        return users;
+    }
 
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
+    private static User mapUser(ResultSet resultSet, boolean readTokens) throws SQLException {
+        final User user = new User();
 
-                user.setProfile(UserProfile.ofValue(resultSet.getInt("profile_id")));
-                user.setStatus(UserStatus.ofValue(resultSet.getInt("status_id")));
+        user.setId(resultSet.getString("id"));
 
-                user.setName(resultSet.getString("name"));
-                user.setSurname(resultSet.getString("surname"));
-            }
-            if (readTokens) {
-                String tokenValue = resultSet.getString("value");
-                if (StringUtils.isNotBlank(tokenValue)) {
-                    int tokenType = resultSet.getInt("token_type_id");
-                    UserToken token = new UserToken();
-                    token.setType(TokenType.ofValue(tokenType));
-                    token.setValue(tokenValue);
-                    token.setUserId(user.getId());
-                    user.addToken(token);
-                }
+        user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password"));
+
+        user.setProfile(UserProfile.ofValue(resultSet.getInt("profile_id")));
+        user.setStatus(UserStatus.ofValue(resultSet.getInt("status_id")));
+
+        user.setName(resultSet.getString("name"));
+        user.setSurname(resultSet.getString("surname"));
+
+        if (readTokens) {
+            final String tokenValue = resultSet.getString("value");
+            if (StringUtils.isNotBlank(tokenValue)) {
+                final UserToken token = new UserToken();
+                token.setValue(tokenValue);
+                token.setUserId(user.getId());
+                token.setType(TokenType.ofValue(resultSet.getInt("token_type_id")));
+                user.addToken(token);
             }
         }
         return user;
