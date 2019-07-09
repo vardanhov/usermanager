@@ -238,29 +238,11 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             throw new DatabaseException(message, ex);
         } finally {
             close(preparedStatement);
-        }
-    }
-
-    @Override
-    public int deleteUserToken(final String id) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = ConnectionProvider.getInstance().getConnection();
-
-            preparedStatement = connection.prepareStatement(DELETE_USER_TOKEN);
-
-            preparedStatement.setString(1, id);
-
-            return preparedStatement.executeUpdate();
-        } catch (final SQLException ex) {
-            final String message = String.format("Something went wrong when trying to delete token. User id: %s", id);
-            throw new DatabaseException(message, ex);
-        } finally {
-            close(preparedStatement);
             close(connection);
         }
     }
+
+
 
     @Override
     public User findById(final String id) {

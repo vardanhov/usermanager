@@ -111,21 +111,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(final String id) {
-
-            try {
-                userDao.deleteUserToken(id);
-                int status = userDao.delete(id);
-                if (status != 1) {
-                    throw new UserNotFoundException(id);
-                }
-                userDao.commit();
-            } catch (Exception e) {
-                userDao.rollback();
-                throw new DatabaseException();
-            } finally {
-                userDao.closeConnection();
-            }
+        int status = userDao.delete(id);
+        if (status != 1) {
+            throw new UserNotFoundException(id);
         }
+
+    }
+
 
 
     @Override

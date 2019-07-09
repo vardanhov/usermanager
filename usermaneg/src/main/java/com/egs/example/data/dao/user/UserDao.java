@@ -46,5 +46,4 @@ public interface UserDao {
 
     List<User> getAllUsers(int value);
 
-    int deleteUserToken(final String id);
 }

@@ -6,9 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
-public class AuthenticationFilter implements Filter{
-
+public class AdminAuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -18,12 +16,14 @@ public class AuthenticationFilter implements Filter{
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession();
+        String servletPath = request.getServletPath();
+        boolean loginRequest = request.getRequestURI().equals(servletPath);
 
-        if (session.getAttribute("user")!=null) {
+        if (loginRequest){
             chain.doFilter(request, response);
-        } else {
-            response.sendRedirect("login-view");
+            return;
         }
+
     }
     @Override
     public void destroy() {}

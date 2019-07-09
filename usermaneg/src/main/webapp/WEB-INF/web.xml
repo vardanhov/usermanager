@@ -51,8 +51,17 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>Users</servlet-name>
+        <servlet-name>UsersView</servlet-name>
         <jsp-file>/WEB-INF/pages/users.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsersView</servlet-name>
+        <url-pattern>/users-view</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Users</servlet-name>
+        <servlet-class>com.egs.example.controller.login.ListUsersController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Users</servlet-name>
@@ -85,6 +94,7 @@
         <servlet-name>EditEmailView</servlet-name>
         <url-pattern>/edit-email-view</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>ResetPasswordView</servlet-name>
         <jsp-file>/WEB-INF/pages/resetPassword.jsp</jsp-file>
@@ -105,6 +115,17 @@
         <url-pattern>/edit-email-view</url-pattern>
         <url-pattern>/edit-user-view</url-pattern>
     </filter-mapping>
+
+<!--    <filter>-->
+<!--        <filter-name>AdminAuthenticationFilter</filter-name>-->
+<!--        <filter-class>com.egs.example.controller.AdminAuthenticationFilter</filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>AdminAuthenticationFilter</filter-name>-->
+<!--        <url-pattern>/users</url-pattern>-->
+<!--        <url-pattern>/delete</url-pattern>-->
+<!--        <url-pattern>/users-view</url-pattern>-->
+<!--    </filter-mapping>-->
 
     <servlet>
         <servlet-name>EditUser</servlet-name>

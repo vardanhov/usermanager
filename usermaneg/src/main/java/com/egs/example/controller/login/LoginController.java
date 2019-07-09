@@ -2,6 +2,7 @@ package com.egs.example.controller.login;
 
 import com.egs.example.data.internal.Credential;
 import com.egs.example.data.model.User;
+import com.egs.example.data.model.UserProfile;
 import com.egs.example.data.model.UserStatus;
 import com.egs.example.service.user.UserService;
 import com.egs.example.service.user.impl.UserServiceImpl;
@@ -40,13 +41,10 @@ public class LoginController extends HttpServlet {
         }
 
         if (user.getStatus() == UserStatus.ACTIVE) {
-            if (user.getProfile().getName().equals("User")){
+            if (user.getProfile() == UserProfile.USER){
                 session.setAttribute("user",  user);
                 response.sendRedirect("welcome");
-            }
-            if (user.getProfile().getName().equals("Admin")){
-                final List<User> users = userService.getUsers();
-                session.setAttribute("users", users);
+            } else if (user.getProfile() == UserProfile.ADMIN){
                 response.sendRedirect("/users");
             }
             return;
