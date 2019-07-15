@@ -1,4 +1,4 @@
-package com.egs.example.controller.edit_email;
+package com.egs.example.controller.user;
 
 import com.egs.example.data.model.TokenType;
 import com.egs.example.data.model.User;
@@ -23,9 +23,9 @@ public class EmailChangeConfirmController extends HttpServlet {
         User user = (User) session.getAttribute("user");
         String email = request.getParameter("email");
         String token = request.getParameter("token");
-     //   boolean check = validate(email, token);
+        boolean check = validate(email, token);
 
-        if (true) {
+        if (check) {
 
             if (user == null) {
                 session.setAttribute("message", "Invalid user for change email");

@@ -115,10 +115,7 @@ public class UserServiceImpl implements UserService {
         if (status != 1) {
             throw new UserNotFoundException(id);
         }
-
     }
-
-
 
     @Override
     public User getById(final String id) {

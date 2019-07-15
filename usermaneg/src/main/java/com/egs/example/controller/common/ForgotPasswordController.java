@@ -1,4 +1,4 @@
-package com.egs.example.controller.edit_password;
+package com.egs.example.controller.common;
 
 import com.egs.example.data.model.User;
 import com.egs.example.service.user.UserService;
@@ -14,53 +14,46 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResetPasswordController extends HttpServlet {
+public class ForgotPasswordController extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
+
     @Override
     protected void service(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        String oldPass = request.getParameter("oldPass");
         String newPass = request.getParameter("newPass");
         String confirmPass = request.getParameter("confirmPass");
-        boolean check = initAndValidate(request,oldPass, newPass, confirmPass);
+        boolean check = initAndValidate(request, newPass, confirmPass);
 
         if (check) {
-            if (user.getPassword().equals(oldPass)) {
+            if (newPass.equals(confirmPass)) {
                 userService.changePassword(user.getId(), newPass);
                 session.setAttribute("message", "Password changed successfully");
                 response.sendRedirect("/welcome");
-            } else {
-                session.setAttribute("message", "Invalid old password");
-                request.getRequestDispatcher("/reset-password-view").forward(request, response);
             }
+            if (!newPass.equals(confirmPass)) {
+                session.setAttribute("message", "New  password field and Confirm password field must be match");
+                request.getRequestDispatcher("/change-password-view").forward(request, response);
+            }
+            session.setAttribute("message", "Password changed successfully");
+            request.getRequestDispatcher("/login-view").forward(request, response);
+
         } else {
-            request.getRequestDispatcher("/reset-password-view").forward(request, response);
+            request.getRequestDispatcher("/change-password-view").forward(request, response);
         }
     }
 
-    boolean initAndValidate(HttpServletRequest request, String oldPass, String newPass, String confirmPass) {
+    boolean initAndValidate(HttpServletRequest request, String newPass, String confirmPass) {
         Map<String, String> errors = new HashMap<>();
-        if (StringUtils.isBlank(oldPass)) {
-            errors.put("oldPass", "Old password is required");
-        }
+
         if (StringUtils.isBlank(newPass)) {
             errors.put("newPass", "New password is required");
         }
         if (StringUtils.isBlank(confirmPass)) {
             errors.put("confirmPass", "Confirm password is required");
         }
-
-        if (errors.isEmpty() && !newPass.equals(confirmPass)) {
-            errors.put("newPass", "Password & Confirm password is mismatched");
-        }
-
-        if (errors.isEmpty() && oldPass.equals(newPass)) {
-            errors.put("newPass", "Old password and new password must be different");
-        }
-
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
             return false;

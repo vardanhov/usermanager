@@ -1,4 +1,4 @@
-package com.egs.example.controller.login;
+package com.egs.example.controller.common;
 
 import com.egs.example.data.internal.Credential;
 import com.egs.example.data.model.User;
@@ -41,11 +41,11 @@ public class LoginController extends HttpServlet {
         }
 
         if (user.getStatus() == UserStatus.ACTIVE) {
+            session.setAttribute("user",  user);
             if (user.getProfile() == UserProfile.USER){
-                session.setAttribute("user",  user);
                 response.sendRedirect("welcome");
             } else if (user.getProfile() == UserProfile.ADMIN){
-                response.sendRedirect("/users");
+                response.sendRedirect("/admin/users");
             }
             return;
         }
@@ -63,13 +63,7 @@ public class LoginController extends HttpServlet {
         request.getRequestDispatcher("/login-view").forward(request, response);
     }
 
-    /**
-     * Initialize and validate credential data
-     * if request is invalid then return null
-     * otherwise return credential
-     * @param request
-     * @return {@link Credential}
-     */
+
     private Credential initAndValidatePayload( HttpServletRequest request) {
 
         String email = request.getParameter("email");

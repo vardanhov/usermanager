@@ -1,4 +1,4 @@
-package com.egs.example.controller.registration;
+package com.egs.example.controller.user;
 
 import com.egs.example.data.model.User;
 import com.egs.example.data.model.UserProfile;

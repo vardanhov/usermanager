@@ -7,7 +7,7 @@
 
     <servlet>
         <servlet-name>RegisterController</servlet-name>
-        <servlet-class>com.egs.example.controller.registration.RegisterController</servlet-class>
+        <servlet-class>com.egs.example.controller.user.RegisterController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>LoginController</servlet-name>
-        <servlet-class>com.egs.example.controller.login.LoginController</servlet-class>
+        <servlet-class>com.egs.example.controller.common.LoginController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -56,21 +56,21 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UsersView</servlet-name>
-        <url-pattern>/users-view</url-pattern>
+        <url-pattern>/admin/users-view</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>Users</servlet-name>
-        <servlet-class>com.egs.example.controller.login.ListUsersController</servlet-class>
+        <servlet-class>com.egs.example.controller.admin.ListUsersController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Users</servlet-name>
-        <url-pattern>/users</url-pattern>
+        <url-pattern>/admin/users</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.egs.example.controller.login.LogoutController</servlet-class>
+        <servlet-class>com.egs.example.controller.common.LogoutController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
@@ -107,7 +107,7 @@
 
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.egs.example.controller.AuthenticationFilter</filter-class>
+        <filter-class>com.egs.example.controller.common.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
@@ -116,20 +116,18 @@
         <url-pattern>/edit-user-view</url-pattern>
     </filter-mapping>
 
-<!--    <filter>-->
-<!--        <filter-name>AdminAuthenticationFilter</filter-name>-->
-<!--        <filter-class>com.egs.example.controller.AdminAuthenticationFilter</filter-class>-->
-<!--    </filter>-->
-<!--    <filter-mapping>-->
-<!--        <filter-name>AdminAuthenticationFilter</filter-name>-->
-<!--        <url-pattern>/users</url-pattern>-->
-<!--        <url-pattern>/delete</url-pattern>-->
-<!--        <url-pattern>/users-view</url-pattern>-->
-<!--    </filter-mapping>-->
+    <filter>
+        <filter-name>AdminAuthenticationFilter</filter-name>
+        <filter-class>com.egs.example.controller.common.AdminAuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminAuthenticationFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
 
     <servlet>
         <servlet-name>EditUser</servlet-name>
-        <servlet-class>com.egs.example.controller.edit_user.EditUserController</servlet-class>
+        <servlet-class>com.egs.example.controller.user.EditUserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EditUser</servlet-name>
@@ -138,7 +136,7 @@
 
     <servlet>
         <servlet-name>EditEmail</servlet-name>
-        <servlet-class>com.egs.example.controller.edit_email.EditEmailController</servlet-class>
+        <servlet-class>com.egs.example.controller.user.EditEmailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EditEmail</servlet-name>
@@ -147,7 +145,7 @@
 
     <servlet>
         <servlet-name>EmailConfirm</servlet-name>
-        <servlet-class>com.egs.example.controller.registration.EmailConfirmController</servlet-class>
+        <servlet-class>com.egs.example.controller.user.EmailConfirmController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EmailConfirm</servlet-name>
@@ -165,7 +163,7 @@
 
     <servlet>
         <servlet-name>SendEmail</servlet-name>
-        <servlet-class>com.egs.example.controller.forget_password.SendEmailController</servlet-class>
+        <servlet-class>com.egs.example.controller.common.SendEmailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmail</servlet-name>
@@ -174,7 +172,7 @@
 
     <servlet>
         <servlet-name>PasswordChangeConfirm</servlet-name>
-        <servlet-class>com.egs.example.controller.forget_password.PasswordChangeConfirmController</servlet-class>
+        <servlet-class>com.egs.example.controller.common.PasswordChangeConfirmController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PasswordChangeConfirm</servlet-name>
@@ -183,7 +181,7 @@
 
     <servlet>
         <servlet-name>EmailChangeConfirm</servlet-name>
-        <servlet-class>com.egs.example.controller.edit_email.EmailChangeConfirmController</servlet-class>
+        <servlet-class>com.egs.example.controller.user.EmailChangeConfirmController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EmailChangeConfirm</servlet-name>
@@ -201,7 +199,7 @@
 
     <servlet>
         <servlet-name>ChangePassword</servlet-name>
-        <servlet-class>com.egs.example.controller.forget_password.ForgotPasswordController</servlet-class>
+        <servlet-class>com.egs.example.controller.common.ForgotPasswordController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ChangePassword</servlet-name>
@@ -210,7 +208,7 @@
 
     <servlet>
     <servlet-name>ResetPassword</servlet-name>
-    <servlet-class>com.egs.example.controller.edit_password.ResetPasswordController</servlet-class>
+    <servlet-class>com.egs.example.controller.user.ResetPasswordController</servlet-class>
 </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
@@ -219,10 +217,10 @@
 
     <servlet>
         <servlet-name>DeleteUser</servlet-name>
-        <servlet-class>com.egs.example.controller.delete_user.DeleteUserController</servlet-class>
+        <servlet-class>com.egs.example.controller.admin.DeleteUserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteUser</servlet-name>
-        <url-pattern>/delete</url-pattern>
+        <url-pattern>/admin/delete</url-pattern>
     </servlet-mapping>
 </web-app>

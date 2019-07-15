@@ -1,4 +1,4 @@
-package com.egs.example.controller.forget_password;
+package com.egs.example.controller.common;
 
 
 import com.egs.example.data.model.TokenType;

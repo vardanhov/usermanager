@@ -17,8 +17,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String DELETE_USER = "DELETE FROM user WHERE id =?";
 
-    private static final String DELETE_USER_TOKEN = "DELETE FROM user_token WHERE user_id =?";
-
     private static final String UPDATE_USER = "UPDATE user SET name = ?, surname = ? where id = ?";
 
     private static final String UPDATE_STATUS = "UPDATE user SET status_id =? where id = ?";
@@ -241,7 +239,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             close(connection);
         }
     }
-
 
 
     @Override

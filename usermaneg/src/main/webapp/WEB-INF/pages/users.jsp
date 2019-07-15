@@ -13,6 +13,12 @@
 </head>
 
 <body>
+<c:if test="${not empty requestScope.message}">
+    <div class="message">
+        <c:out value="${requestScope.message}" escapeXml="false"/>
+    </div>
+    <c:remove var="message" scope="request"/>
+</c:if>
 <div class="container">
     <div class="col-md-offset-1 col-md-10">
         <hr/>
@@ -35,7 +41,7 @@
                     <c:choose>
                         <c:when test="${not empty users}">
                             <c:forEach var="user" items="${users}">
-                                <c:url var="deleteLink" value="/delete">
+                                <c:url var="deleteLink" value="/admin/delete">
                                     <c:param name="id" value="${user.id}"/>
                                 </c:url>
                                 <tr>

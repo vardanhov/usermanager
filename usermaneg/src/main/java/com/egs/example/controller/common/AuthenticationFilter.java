@@ -1,4 +1,4 @@
-package com.egs.example.controller;
+package com.egs.example.controller.common;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +26,7 @@ public class AuthenticationFilter implements Filter{
         }
     }
     @Override
-    public void destroy() {}
+    public void destroy() {
 
+    }
 }
