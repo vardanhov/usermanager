@@ -1,17 +1,16 @@
-package com.egs.example.service.user.impl;
+package com.egs.example.service.impl;
 
-import com.egs.example.data.dao.exception.DatabaseException;
+import com.egs.example.exception.DatabaseException;
 import com.egs.example.data.dao.user.UserDao;
 import com.egs.example.data.dao.user.impl.UserDaoImpl;
 import com.egs.example.data.internal.Credential;
 import com.egs.example.data.model.*;
-import com.egs.example.service.user.CreateUserRequest;
-import com.egs.example.service.user.SendEmail;
-import com.egs.example.service.user.UpdateUserRequest;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.exception.EmailAlreadyExistException;
-import com.egs.example.service.user.exception.MailException;
-import com.egs.example.service.user.exception.UserNotFoundException;
+import com.egs.example.data.internal.CreateUserRequest;
+import com.egs.example.sendemail.SendEmail;
+import com.egs.example.data.internal.UpdateUserRequest;
+import com.egs.example.service.UserService;
+import com.egs.example.exception.EmailAlreadyExistException;
+import com.egs.example.exception.UserNotFoundException;
 
 import java.util.*;
 
@@ -99,14 +98,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateStatus(UpdateUserRequest updateUserRequest) {
-        final User user = getById(updateUserRequest.getId());
+        User user = getById(updateUserRequest.getId());
         user.setId(updateUserRequest.getId());
         user.setProfile(updateUserRequest.getProfile());
         user.setStatus(UserStatus.ACTIVE);
         user.setName(updateUserRequest.getName());
         user.setSurname(updateUserRequest.getSurname());
-        return userDao.updateStatus(user);
+        UserToken userToken = createToken(user);
+        try {
+            user = userDao.updateStatus(user);
+            userDao.deleteToken(userToken);
+            userDao.commit();
+            return user;
+        } catch (Exception e) {
+            userDao.rollback();
+            throw new DatabaseException();
+        } finally {
+            userDao.closeConnection();
+        }
     }
+
+
 
 
     @Override
@@ -166,7 +178,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendTokenChangeEmail(User user, String email) {
-
         UserToken userToken = createTokenChangeEmail(user);
         try {
             if (user.getTokens() != null && user.getTokens().get(TokenType.EMAIL_CHANGE) != null) {
@@ -194,7 +205,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changePassword(String id, String password) {
-        userDao.updatePassword(id, password);
+        User user = userDao.findById(id);
+        UserToken userToken = createTokenForgotPassword(user);
+        try {
+            userDao.updatePassword(id, password);
+            userDao.deleteToken(userToken);
+            userDao.commit();
+        } catch (Exception e) {
+            userDao.rollback();
+            throw new DatabaseException();
+        } finally {
+            userDao.closeConnection();
+        }
     }
 
     @Override
@@ -207,26 +229,4 @@ public class UserServiceImpl implements UserService {
             throw new EmailAlreadyExistException(email);
         }
     }
-
-    //    public static void main(String[] args) {
-//        List<? extends Number> ints = new ArrayList<>();
-//        ints = new ArrayList<Integer>();
-//
-//        List list = new ArrayList();
-//        list.add(1);
-//        list.add(new Object[]{});
-//
-//        ints.add(3); ints.add(5); ints.add(10);
-//        double sum = sum(ints);
-//        System.out.println("Sum of ints="+sum);
-//    }
-//
-//    public static double sum(List<? extends Number> list){
-//        double sum = 0;
-//        for(Number n : list){
-//            sum += n.doubleValue();
-//        }
-//        return sum;
-//
-//    }
 }

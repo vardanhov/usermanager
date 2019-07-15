@@ -1,6 +1,8 @@
-package com.egs.example.service.user;
+package com.egs.example.service;
 
+import com.egs.example.data.internal.CreateUserRequest;
 import com.egs.example.data.internal.Credential;
+import com.egs.example.data.internal.UpdateUserRequest;
 import com.egs.example.data.model.User;
 import com.egs.example.data.model.UserToken;
 

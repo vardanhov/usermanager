@@ -33,18 +33,18 @@
 <br><br>
 <tr>
     <td>
-        <input type="button" value="Edit User"    onclick="window.location.href='edit-user-view'"/>
+        <input type="button" value="Edit User"    onclick="window.location.href='/user/edit-user-view'"/>
     </td>
     <td>
-        <input type="button" value="Edit Email"    onclick="window.location.href='edit-email-view'"/>
+        <input type="button" value="Edit Email"    onclick="window.location.href='/user/edit-email-view'"/>
     </td>
     <td>
-        <input type="button" value="Reset Password" onclick="window.location.href='reset-password-view'"/>
+        <input type="button" value="Reset Password" onclick="window.location.href='/user/reset-password-view'"/>
     </td>
 </tr>
 <br>
 <br>
-<a href="<%=request.getContextPath()%>/logout">Logout</a>
+<a href="<%=request.getContextPath()%>/user/logout">Logout</a>
 
 </body>
 </html>

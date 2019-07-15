@@ -1,4 +1,4 @@
-package com.egs.example.service.user;
+package com.egs.example.data.internal;
 
 import com.egs.example.data.model.UserProfile;
 import com.egs.example.data.model.UserStatus;

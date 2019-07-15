@@ -1,8 +1,8 @@
 package com.egs.example.controller.user;
 
 import com.egs.example.data.model.User;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.impl.UserServiceImpl;
+import com.egs.example.service.UserService;
+import com.egs.example.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -25,19 +25,19 @@ public class ResetPasswordController extends HttpServlet {
         String oldPass = request.getParameter("oldPass");
         String newPass = request.getParameter("newPass");
         String confirmPass = request.getParameter("confirmPass");
-        boolean check = initAndValidate(request,oldPass, newPass, confirmPass);
+        boolean isValid = initAndValidate(request, oldPass, newPass, confirmPass);
 
-        if (check) {
+        if (isValid) {
             if (user.getPassword().equals(oldPass)) {
                 userService.changePassword(user.getId(), newPass);
                 session.setAttribute("message", "Password changed successfully");
-                response.sendRedirect("/welcome");
+                response.sendRedirect("/user/welcome");
             } else {
                 session.setAttribute("message", "Invalid old password");
-                request.getRequestDispatcher("/reset-password-view").forward(request, response);
+                request.getRequestDispatcher("/user/reset-password-view").forward(request, response);
             }
         } else {
-            request.getRequestDispatcher("/reset-password-view").forward(request, response);
+            request.getRequestDispatcher("/user/reset-password-view").forward(request, response);
         }
     }
 
@@ -58,13 +58,12 @@ public class ResetPasswordController extends HttpServlet {
         }
 
         if (errors.isEmpty() && oldPass.equals(newPass)) {
-            errors.put("newPass", "Old password and new password must be different");
+            errors.put("oldPass", "Old password and new password must be different");
         }
 
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
-            return false;
         }
-        return true;
+        return errors.isEmpty();
     }
 }

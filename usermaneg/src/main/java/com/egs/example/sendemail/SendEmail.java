@@ -1,8 +1,6 @@
-package com.egs.example.service.user;
+package com.egs.example.sendemail;
 
-import com.egs.example.data.model.TokenType;
-import com.egs.example.service.user.exception.MailException;
-import org.apache.taglibs.standard.tag.el.sql.SetDataSourceTag;
+import com.egs.example.exception.MailException;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -10,10 +8,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.UUID;
 
 public class SendEmail {
 
@@ -115,17 +111,5 @@ public class SendEmail {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) {
-        SendEmail userService = new SendEmail();
-        String to = "vardan_hov@yahoo.com";
-        try {
-            userService.sendEmailConfirmation(to, UUID.randomUUID().toString());
-        } catch (MailException e) {
-            e.printStackTrace();
-        }
-
-
     }
 }

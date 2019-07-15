@@ -4,8 +4,8 @@ import com.egs.example.data.internal.Credential;
 import com.egs.example.data.model.User;
 import com.egs.example.data.model.UserProfile;
 import com.egs.example.data.model.UserStatus;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.impl.UserServiceImpl;
+import com.egs.example.service.UserService;
+import com.egs.example.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -43,7 +42,7 @@ public class LoginController extends HttpServlet {
         if (user.getStatus() == UserStatus.ACTIVE) {
             session.setAttribute("user",  user);
             if (user.getProfile() == UserProfile.USER){
-                response.sendRedirect("welcome");
+                response.sendRedirect("/user/welcome");
             } else if (user.getProfile() == UserProfile.ADMIN){
                 response.sendRedirect("/admin/users");
             }

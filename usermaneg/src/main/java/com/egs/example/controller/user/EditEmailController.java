@@ -1,8 +1,8 @@
 package com.egs.example.controller.user;
 
 import com.egs.example.data.model.User;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.impl.UserServiceImpl;
+import com.egs.example.service.UserService;
+import com.egs.example.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -26,10 +26,10 @@ public class EditEmailController extends HttpServlet {
         User user = (User) session.getAttribute("user");
         String email = request.getParameter("email");
         String newEmail = request.getParameter("newEmail");
-        boolean check = validate(request, email, newEmail);
-        if(check){
+        boolean isValid = validate(request, email, newEmail);
+        if(isValid){
             userService.sendTokenChangeEmail(user,newEmail);
-            response.sendRedirect("/welcome");
+            response.sendRedirect("/user/welcome");
         }
     }
 

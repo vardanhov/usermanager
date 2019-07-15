@@ -1,6 +1,6 @@
 package com.egs.example.data.dao;
 
-import com.egs.example.data.dao.exception.DatabaseException;
+import com.egs.example.exception.DatabaseException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

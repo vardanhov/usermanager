@@ -5,7 +5,7 @@
 //import com.egs.example.data.model.User;
 //import com.egs.example.data.model.UserProfile;
 //import com.egs.example.data.model.UserStatus;
-//import com.egs.example.service.user.exception.EmailAlreadyExistException;
+//import com.egs.example.exception.EmailAlreadyExistException;
 //import org.junit.After;
 //import org.junit.Assert;
 //import org.junit.Before;

@@ -12,7 +12,7 @@
 <body>
 
 <h1>Reset Password</h1>
-<form action="<%=request.getContextPath()%>/reset-password" method="post" class="form-register">
+<form action="<%=request.getContextPath()%>/user/reset-password" method="post" class="form-register">
     <c:if test="${not empty sessionScope.message}">
         <div class="message">
             <c:out value="${sessionScope.message}" escapeXml="false"/>

@@ -12,7 +12,7 @@
 <body>
 
 <h1>Edit User</h1>
-<form action="<%=request.getContextPath()%>/edit-user" method="post" class="form-register">
+<form action="<%=request.getContextPath()%>/user/edit-user" method="post" class="form-register">
     <c:if test="${not empty sessionScope.message}">
         <div class="message">
             <c:out value="${sessionScope.message}" escapeXml="false"/>

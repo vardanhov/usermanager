@@ -1,4 +1,4 @@
-package com.egs.example.data.dao.exception;
+package com.egs.example.exception;
 
 public class DatabaseException extends RuntimeException {
 

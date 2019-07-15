@@ -21,7 +21,6 @@
         <c:out value="${sessionScope.message}" escapeXml="false"/>
     </div>
     <c:remove var="message" scope="session"/>
-    <a href="email-confirm"> Confirm Email</a>
 </c:if>
 </body>
 </html>

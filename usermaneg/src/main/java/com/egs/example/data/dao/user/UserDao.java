@@ -36,6 +36,8 @@ public interface UserDao {
 
     void addToken(UserToken userToken);
 
+    void deleteToken(UserToken userToken);
+
     void updateToken(UserToken userToken);
 
     void commit();

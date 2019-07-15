@@ -3,8 +3,8 @@ package com.egs.example.controller.common;
 
 import com.egs.example.data.model.TokenType;
 import com.egs.example.data.model.User;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.impl.UserServiceImpl;
+import com.egs.example.service.UserService;
+import com.egs.example.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -24,9 +24,9 @@ public class PasswordChangeConfirmController extends HttpServlet {
         HttpSession session = request.getSession();
         String email = request.getParameter("email");
         String token = request.getParameter("token");
-        boolean check = validate(email, token);
+        boolean isValid = validate(email, token);
 
-        if (check) {
+        if (isValid) {
             User user = userService.getByEmail(email);
             if (user == null) {
                 session.setAttribute("message", "Invalid user for change password");

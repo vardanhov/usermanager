@@ -3,10 +3,10 @@ package com.egs.example.controller.user;
 import com.egs.example.data.model.User;
 import com.egs.example.data.model.UserProfile;
 import com.egs.example.data.model.UserStatus;
-import com.egs.example.service.user.CreateUserRequest;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.exception.EmailAlreadyExistException;
-import com.egs.example.service.user.impl.UserServiceImpl;
+import com.egs.example.data.internal.CreateUserRequest;
+import com.egs.example.service.UserService;
+import com.egs.example.exception.EmailAlreadyExistException;
+import com.egs.example.service.impl.UserServiceImpl;
 import com.egs.example.validation.EmailValidation;
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,6 +50,7 @@ public class RegisterController extends HttpServlet {
 
     private CreateUserRequest initAndValidatePayload(HttpServletRequest request) {
         CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setStatus(UserStatus.EMAIL_NOT_CONFIRMED);
         Map<String, String> errors = new HashMap<>();
 
         String name = request.getParameter("name");
@@ -84,8 +85,6 @@ public class RegisterController extends HttpServlet {
             errors.put("profile", "Profile is required");
         }
 
-        userRequest.setStatus(UserStatus.EMAIL_NOT_CONFIRMED);
-
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm-password");
 
@@ -95,12 +94,13 @@ public class RegisterController extends HttpServlet {
             } else {
                 errors.put("password", "Password and confirm password mismatches");
             }
-        }
-        if (StringUtils.isEmpty(password)) {
-            errors.put("password", "Password is required");
-        }
-        if (StringUtils.isEmpty(confirmPassword)) {
-            errors.put("confirm-password", "Confirm password is required");
+        } else {
+            if (StringUtils.isEmpty(password)) {
+                errors.put("password", "Password is required");
+            }
+            if (StringUtils.isEmpty(confirmPassword)) {
+                errors.put("confirm-password", "Confirm password is required");
+            }
         }
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);

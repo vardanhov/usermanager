@@ -1,6 +1,7 @@
-package com.egs.example.controller.common;
+package com.egs.example.controller.filter;
 
 import com.egs.example.data.model.User;
+import com.egs.example.data.model.UserProfile;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +22,11 @@ public class AdminAuthenticationFilter implements Filter {
         HttpSession session = request.getSession();
         session.getAttribute("user");
         User user = (User) session.getAttribute("user");
-        if (user.getProfile().getName().equals("Admin")) {
+        if (user != null && user.getProfile() == UserProfile.ADMIN) {
             chain.doFilter(request, response);
-            return;
+        } else {
+            session.setAttribute("message","Invalid request");
+            response.sendRedirect("login-view");
         }
     }
 

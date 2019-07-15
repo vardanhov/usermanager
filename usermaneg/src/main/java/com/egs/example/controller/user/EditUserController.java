@@ -1,9 +1,9 @@
 package com.egs.example.controller.user;
 
 import com.egs.example.data.model.User;
-import com.egs.example.service.user.UpdateUserRequest;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.impl.UserServiceImpl;
+import com.egs.example.data.internal.UpdateUserRequest;
+import com.egs.example.service.UserService;
+import com.egs.example.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ public class EditUserController extends HttpServlet {
         UpdateUserRequest updateUserRequest =initAndValidatePayload(request, user);
         UserService userService = new UserServiceImpl();
         session.setAttribute("user",userService.update(updateUserRequest));
-        response.sendRedirect("/welcome");
+        response.sendRedirect("/user/welcome");
     }
 
     private UpdateUserRequest initAndValidatePayload(HttpServletRequest request, User user) {

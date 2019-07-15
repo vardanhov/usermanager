@@ -1,4 +1,4 @@
-package com.egs.example.controller.common;
+package com.egs.example.controller.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +19,10 @@ public class AuthenticationFilter implements Filter{
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("user")!=null) {
+        if (session.getAttribute("user") != null) {
             chain.doFilter(request, response);
         } else {
+            session.setAttribute("message","User not found");
             response.sendRedirect("login-view");
         }
     }

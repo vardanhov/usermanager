@@ -2,8 +2,8 @@ package com.egs.example.controller.common;
 
 
 import com.egs.example.data.model.User;
-import com.egs.example.service.user.UserService;
-import com.egs.example.service.user.impl.UserServiceImpl;
+import com.egs.example.service.UserService;
+import com.egs.example.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -20,8 +20,8 @@ public class SendEmailController extends HttpServlet {
 
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        boolean check = initAndValidate(request);
-        if (check) {
+        boolean isValid = initAndValidate(request);
+        if (isValid) {
             User user = userService.getByEmail(request.getParameter("email"));
             if (user == null) {
                 request.setAttribute("message", "Invalid user");

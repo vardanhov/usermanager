@@ -1,7 +1,7 @@
 package com.egs.example.data.dao.user.impl;
 
 import com.egs.example.data.dao.BaseDao;
-import com.egs.example.data.dao.exception.DatabaseException;
+import com.egs.example.exception.DatabaseException;
 import com.egs.example.data.dao.user.UserDao;
 import com.egs.example.data.dao.user.mapper.UserMapper;
 import com.egs.example.data.dao.util.ConnectionProvider;
@@ -40,6 +40,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     private static final String INSERT_USER_TOKEN = "INSERT INTO user_token (user_id, token_type_id, value) VALUES(?, ?, ?)";
 
     private static final String UPDATE_USER_TOKEN = "UPDATE user_token SET value = ? WHERE user_id = ? AND token_type_id= ?";
+
+    private static final String DELETE_USER_TOKEN = "DELETE from user_token WHERE user_id = ? AND token_type_id= ?";
 
     private static final String SET_NEW_EMAIL = "UPDATE user SET not_confirm_email =? where id = ?";
 
@@ -445,6 +447,31 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             close(preparedStatement);
         }
     }
+
+    @Override
+    public void deleteToken(UserToken userToken) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = ConnectionProvider.getInstance().getConnection(false);
+            currentConnection.set(connection);
+
+            preparedStatement = connection.prepareStatement(DELETE_USER_TOKEN);
+
+            preparedStatement.setString(1, userToken.getUserId());
+            preparedStatement.setInt(2, userToken.getType().getValue());
+
+            preparedStatement.executeUpdate();
+
+        } catch (final SQLException ex) {
+            final String message = String.format("Something went wrong when trying to delete: %s", userToken);
+            throw new DatabaseException(message, ex);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
     private static List<User> mapAsList(final ResultSet resultSet) throws SQLException {
         final List<User> users = new ArrayList<>();
         while (resultSet.next()) {

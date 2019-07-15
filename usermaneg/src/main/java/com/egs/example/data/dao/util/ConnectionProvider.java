@@ -23,7 +23,6 @@ public class ConnectionProvider {
         dataSource.setPassword("root");
         dataSource.setMinIdle(5);
         dataSource.setMaxIdle(10);
-        // dataSource.setMaxOpenPreparedStatements(100);
     }
 
     public static ConnectionProvider getInstance() {

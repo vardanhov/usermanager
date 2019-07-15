@@ -1,6 +1,6 @@
-package com.egs.example.controller.common;
-import java.io.IOException;
+package com.egs.example.controller.user;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

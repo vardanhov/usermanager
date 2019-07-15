@@ -12,7 +12,7 @@
 <body>
 
 <h1>Edit Email</h1>
-<form action="<%=request.getContextPath()%>/edit-email" method="post" class="form-register">
+<form action="<%=request.getContextPath()%>/user/edit-email" method="post" class="form-register">
     <%-- show message if exists, then remove it --%>
     <c:if test="${not empty sessionScope.message}">
         <div class="message">
