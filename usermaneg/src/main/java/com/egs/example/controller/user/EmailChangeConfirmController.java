@@ -20,19 +20,22 @@ public class EmailChangeConfirmController extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
         String email = request.getParameter("email");
         String token = request.getParameter("token");
-        boolean check = validate(email, token);
+        User user = userService.getNotConfirmEmail(email);
 
-        if (check) {
+        boolean isValid = validate(email, token);
+
+        if (isValid) {
             if (user == null) {
                 session.setAttribute("message", "Invalid user for change email");
                 response.sendRedirect("/user/edit-email-view");
             } else if (user.getTokens() != null && token.equals(user.getTokens().get(TokenType.EMAIL_CHANGE).getValue())) {
-                userService.changeEmail(user.getId(), email);
+                user = userService.changeEmail(user.getId(), email);
                 session.setAttribute("user", user);
+                session.setAttribute("message","Email changed successfully");
                 response.sendRedirect("/user/welcome");
+
             } else {
                 session.setAttribute("message", "You must click link");
                 response.sendRedirect("/user/edit-email-view");

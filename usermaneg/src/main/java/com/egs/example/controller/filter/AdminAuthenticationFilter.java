@@ -26,7 +26,7 @@ public class AdminAuthenticationFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             session.setAttribute("message","Invalid request");
-            response.sendRedirect("login-view");
+            response.sendRedirect(String.format("%s/login-view", request.getContextPath()));
         }
     }
 

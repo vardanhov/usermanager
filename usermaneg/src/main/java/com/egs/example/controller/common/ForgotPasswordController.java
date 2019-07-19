@@ -21,14 +21,15 @@ public class ForgotPasswordController extends HttpServlet {
     protected void service(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+
         String newPass = request.getParameter("newPass");
         String confirmPass = request.getParameter("confirmPass");
         boolean check = initAndValidate(request, newPass, confirmPass);
 
         if (check) {
+            HttpSession session = request.getSession();
             if (newPass.equals(confirmPass)) {
+                User user = (User) session.getAttribute("user");
                 userService.changePassword(user.getId(), newPass);
                 session.setAttribute("message", "Password changed successfully");
                 response.sendRedirect("/login-view");
@@ -37,15 +38,13 @@ public class ForgotPasswordController extends HttpServlet {
                 session.setAttribute("message", "New  password field and Confirm password field must be match");
                 request.getRequestDispatcher("/change-password-view").forward(request, response);
             }
-            session.setAttribute("message", "Password changed successfully");
-            request.getRequestDispatcher("/login-view").forward(request, response);
 
         } else {
             request.getRequestDispatcher("/change-password-view").forward(request, response);
         }
     }
 
-    boolean initAndValidate(HttpServletRequest request, String newPass, String confirmPass) {
+    private static boolean initAndValidate(HttpServletRequest request, String newPass, String confirmPass) {
         Map<String, String> errors = new HashMap<>();
 
         if (StringUtils.isBlank(newPass)) {

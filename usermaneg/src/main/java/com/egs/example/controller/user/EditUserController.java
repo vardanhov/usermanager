@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditUserController extends HttpServlet {
+    private final UserService userService = new UserServiceImpl();
+
+
     @Override
     protected void service(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
@@ -23,9 +26,14 @@ public class EditUserController extends HttpServlet {
         session.getAttribute("user");
         User user =(User)session.getAttribute("user");
         UpdateUserRequest updateUserRequest =initAndValidatePayload(request, user);
-        UserService userService = new UserServiceImpl();
-        session.setAttribute("user",userService.update(updateUserRequest));
-        response.sendRedirect("/user/welcome");
+
+        if (updateUserRequest!=null) {
+            session.setAttribute("user",userService.update(updateUserRequest));
+            session.setAttribute("message", "User changed successfully");
+            response.sendRedirect("/user/welcome");
+        } else {
+            request.getRequestDispatcher("/user/edit-user-view").forward(request, response);
+        }
     }
 
     private UpdateUserRequest initAndValidatePayload(HttpServletRequest request, User user) {

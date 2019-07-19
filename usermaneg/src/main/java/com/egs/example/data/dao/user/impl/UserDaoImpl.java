@@ -23,7 +23,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
     private static final String UPDATE_PASSWORD = "UPDATE user SET password =? where id = ?";
 
-    private static final String UPDATE_EMAIL = "UPDATE user SET email = ? ,new_email =? where id = ?";
+    private static final String UPDATE_EMAIL = "UPDATE user SET email = ? ,not_confirm_email =? where id = ?";
 
     private static final String INSERT_USER = "INSERT INTO user (id, profile_id, status_id, email, password, name, surname) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
@@ -32,6 +32,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     private static final String GET_ALL_USER = "SELECT * FROM user  where profile_id=?";
 
     private static final String GET_USER_BY_EMAIL = "SELECT * FROM user u LEFT JOIN  user_token ut ON u.id=ut.user_id  WHERE u.email = ? ";
+
+    private static final String GET_USER_BY_NOT_CONFIRM_EMAIL = "SELECT * FROM user u LEFT JOIN  user_token ut ON u.id=ut.user_id  WHERE u.not_confirm_email = ? ";
 
     private static final String GET_USER_BY_CREDENTIAL = "SELECT * FROM user WHERE email = ? AND password = ?";
 
@@ -359,6 +361,30 @@ public class UserDaoImpl extends BaseDao implements UserDao {
         try {
             connection = ConnectionProvider.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(GET_USER_BY_EMAIL);
+            preparedStatement.setString(1, email);
+
+            resultSet = preparedStatement.executeQuery();
+
+            return UserMapper.map(resultSet, true);
+        } catch (final SQLException ex) {
+            final String message = String.format("Something went wrong when trying to find user:  %s", email);
+            throw new DatabaseException(message, ex);
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public User getByNotConfirmEmail(String email) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = ConnectionProvider.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(GET_USER_BY_NOT_CONFIRM_EMAIL);
             preparedStatement.setString(1, email);
 
             resultSet = preparedStatement.executeQuery();

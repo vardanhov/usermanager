@@ -22,6 +22,8 @@ public interface UserService {
 
     User getByEmail(String email);
 
+    User getNotConfirmEmail(final String email);
+
     User getByCredential(Credential credential);
 
     User updateStatus(UpdateUserRequest updateUserRequest);
@@ -36,7 +38,7 @@ public interface UserService {
 
     void changePassword(String email, String password);
 
-    void changeEmail(String id, String password);
+    User changeEmail(String id, String password);
 
     void sendTokenChangeEmail(User user ,String email);
 

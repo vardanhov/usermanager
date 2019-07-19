@@ -24,6 +24,8 @@ public interface UserDao {
 
     User getByEmail(String email);
 
+    User getByNotConfirmEmail(String email);
+
     User getByCredential(String email, String password);
 
     User updateStatus(User user);

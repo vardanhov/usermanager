@@ -23,13 +23,19 @@ public class EditEmailController extends HttpServlet {
                            HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.getAttribute("user");
+
         User user = (User) session.getAttribute("user");
         String email = request.getParameter("email");
         String newEmail = request.getParameter("newEmail");
+
         boolean isValid = validate(request, email, newEmail);
-        if(isValid){
+
+        if (isValid) {
             userService.sendTokenChangeEmail(user,newEmail);
+            session.setAttribute("message", "You must confirm email");
             response.sendRedirect("/user/welcome");
+        } else {
+            request.getRequestDispatcher("/user/edit-email-view").forward(request, response);
         }
     }
 

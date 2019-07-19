@@ -38,6 +38,7 @@ public class ResetPasswordController extends HttpServlet {
             }
         } else {
             request.getRequestDispatcher("/user/reset-password-view").forward(request, response);
+
         }
     }
 

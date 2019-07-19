@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             user = userDao.create(user);
-            emailSender.sendEmailConfirmation(user.getEmail(), userToken.getValue());
+            emailSender.sendEmailConfirmation(user.getEmail(), userToken.getValue(), user);
             userDao.commit();
             return user;
         } catch (Exception e) {
@@ -119,8 +119,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-
     @Override
     public void delete(final String id) {
         int status = userDao.delete(id);
@@ -134,6 +132,7 @@ public class UserServiceImpl implements UserService {
         return userDao.findById(id);
     }
 
+
     @Override
     public List<User> getAll() {
         final List<User> users = userDao.findAll();
@@ -146,6 +145,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(final String email) {
         return userDao.getByEmail(email);
+    }
+
+    @Override
+    public User getNotConfirmEmail(final String email) {
+        return userDao.getByNotConfirmEmail(email);
     }
 
     @Override
@@ -166,7 +170,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 userDao.addToken(userToken);
             }
-            emailSender.sendResetPassword(user.getEmail(), userToken.getValue());
+            emailSender.sendResetPassword(user.getEmail(), userToken.getValue(), user);
             userDao.commit();
         } catch (Exception e) {
             userDao.rollback();
@@ -186,7 +190,7 @@ public class UserServiceImpl implements UserService {
                 userDao.addToken(userToken);
             }
             userDao.setNewEmail(user.getId(), email);
-            emailSender.sendChangeEmail(email, userToken.getValue());
+            emailSender.sendChangeEmail(email, userToken.getValue(), user);
             userDao.commit();
         } catch (Exception e) {
             userDao.rollback();
@@ -197,10 +201,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         int value = UserProfile.USER.getValue();
         List<User> users = userDao.getAllUsers(value);
-          return users;
+        return users;
     }
 
     @Override
@@ -220,8 +224,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeEmail(String id, String newEmail) {
-        userDao.updateEmail(id, newEmail);
+    public User changeEmail(String id, String newEmail) {
+        User user = userDao.findById(id);
+        UserToken userToken = createTokenChangeEmail(user);
+        try {
+            userDao.updateEmail(id, newEmail);
+            userDao.deleteToken(userToken);
+            userDao.commit();
+            user = userDao.findById(id);
+            return user;
+        } catch (Exception e) {
+            userDao.rollback();
+            throw new DatabaseException();
+        } finally {
+            userDao.closeConnection();
+        }
     }
 
     private void checkIfExistsByEmail(final String email) {

@@ -24,27 +24,25 @@
         <td>Surname</td>
         <td>${user.surname}</td>
     </tr>
-</table>
-<br>
-<tr>
-    <td><input type="file" name="fname"/></td><br><br>
-    <td><input type="submit" value="Upload"/></td>
-</tr>
-<br><br>
-<tr>
-    <td>
-        <input type="button" value="Edit User"    onclick="window.location.href='/user/edit-user-view'"/>
-    </td>
-    <td>
-        <input type="button" value="Edit Email"    onclick="window.location.href='/user/edit-email-view'"/>
-    </td>
-    <td>
-        <input type="button" value="Reset Password" onclick="window.location.href='/user/reset-password-view'"/>
-    </td>
-</tr>
-<br>
-<br>
-<a href="<%=request.getContextPath()%>/user/logout">Logout</a>
+    <br>
+    <br>
+    <tr>
+        <td>
+            <input type="button" value="Edit User" onclick="window.location.href='/user/edit-user-view'"/>
+        </td>
+        <td>
+            <input type="button" value="Edit Email" onclick="window.location.href='/user/edit-email-view'"/>
+        </td>
+        <td>
+            <input type="button" value="Reset Password" onclick="window.location.href='/user/reset-password-view'"/>
+        </td>
+    </tr>
+    <br>
+    <br>
+    <tr>
+        <td><a href="<%=request.getContextPath()%>/user/logout">Logout</a></td>
+    </tr>
 
+</table>
 </body>
 </html>
