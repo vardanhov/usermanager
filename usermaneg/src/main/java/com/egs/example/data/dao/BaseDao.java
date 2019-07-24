@@ -33,7 +33,6 @@ public class BaseDao {
         try {
             connection.rollback();
         } catch (SQLException e) {
-           // todo logging
         }
     }
     public void closeConnection() {

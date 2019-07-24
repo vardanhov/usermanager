@@ -100,7 +100,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
             preparedStatement.executeUpdate();
 
-
             return user;
         } catch (final SQLException ex) {
             final String message = String.format("Something went wrong when trying to update user. User: %s", user);
@@ -341,7 +340,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
             preparedStatement = connection.prepareStatement(DELETE_ALL_USERS);
 
             preparedStatement.executeUpdate();
-
 
         } catch (final SQLException ex) {
 

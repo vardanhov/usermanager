@@ -4,7 +4,6 @@ import com.egs.example.data.model.User;
 import com.egs.example.service.UserService;
 import com.egs.example.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,15 +30,21 @@ public class EditEmailController extends HttpServlet {
         boolean isValid = validate(request, email, newEmail);
 
         if (isValid) {
-            userService.sendTokenChangeEmail(user,newEmail);
-            session.setAttribute("message", "You must confirm email");
-            response.sendRedirect("/user/welcome");
+            User userWithNewEmail = userService.getByEmail(newEmail);
+            if (userWithNewEmail == null) {
+                userService.sendTokenChangeEmail(user, newEmail);
+                session.setAttribute("message", "You must confirm email");
+                response.sendRedirect("/user/welcome");
+            } else {
+                session.setAttribute("message", "User with email address already exists");
+                response.sendRedirect("/user/edit-email-view");
+            }
         } else {
-            request.getRequestDispatcher("/user/edit-email-view").forward(request, response);
+                request.getRequestDispatcher("/user/edit-email-view").forward(request, response);
         }
     }
 
-    private boolean validate(HttpServletRequest request, String email, String newEmail ) {
+    private boolean validate(HttpServletRequest request, String email, String newEmail) {
 
         Map<String, String> errors = new HashMap<>();
         if (StringUtils.isEmpty(email)) {
