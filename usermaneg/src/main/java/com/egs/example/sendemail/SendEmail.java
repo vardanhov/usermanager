@@ -81,6 +81,7 @@ public class SendEmail {
 
             String url = prop.getProperty("mail.host") + "/confirm-change-password?token=" + token + "&email=" + addressTo;
             String text = "Please  click the following link to change password <a href=\"" + url + "\">Change Password</a>";
+
             StringWriter out = sampleVelocity.configVelocity(text,  user);
 
             messageBodyPart.setContent(out.toString(), "text/html");

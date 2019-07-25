@@ -26,85 +26,74 @@ public class RegisterController extends HttpServlet {
                            HttpServletResponse response)
             throws ServletException, IOException {
 
-        CreateUserRequest userRequest = initAndValidatePayload(request);
-        if (request.getAttribute("errors") != null) {
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setStatus(UserStatus.EMAIL_NOT_CONFIRMED);
+        userRequest.setName(request.getParameter("name").trim());
+        userRequest.setSurname(request.getParameter("surname").trim());
+        userRequest.setEmail(request.getParameter("email").trim());
+        UserProfile userProfile = UserProfile.ofName(request.getParameter("profile"));
+        userRequest.setProfile(userProfile);
+        userRequest.setPassword(request.getParameter("password"));
+        userRequest.setConfirmPassword(request.getParameter("confirm-password"));
+
+        Map<String, String> isValid = initAndValidatePayload(userRequest);
+        if (!isValid.isEmpty()) {
+            request.setAttribute("errors", isValid);
             request.getRequestDispatcher("/register-view").forward(request, response);
-            return;
-        }
+        } else {
+            try {
+                UserService userService = new UserServiceImpl();
+                User user = userService.create(userRequest);
 
-        try {
-            UserService userService = new UserServiceImpl();
-            User user = userService.create(userRequest);
+                HttpSession session = request.getSession();
+                session.setAttribute("message", "You are created successfully. Please confirm email");
+                session.setAttribute("user", user);
+                response.sendRedirect("/");
 
-            HttpSession session = request.getSession();
-            session.setAttribute("message", "You are created successfully. Please confirm email");
-            session.setAttribute("user", user);
-            response.sendRedirect("/");
-
-        } catch (EmailAlreadyExistException e) {
-            Map<String, String> errors = new HashMap<>();
-            errors.put("email", "Email already exists");
-            request.getRequestDispatcher("/register-view").forward(request, response);
+            } catch (EmailAlreadyExistException e) {
+                request.setAttribute("message", "Email already exist");
+                request.getRequestDispatcher("/register-view").forward(request, response);
+            }
         }
     }
 
-    private CreateUserRequest initAndValidatePayload(HttpServletRequest request) {
-        CreateUserRequest userRequest = new CreateUserRequest();
-        userRequest.setStatus(UserStatus.EMAIL_NOT_CONFIRMED);
+    private Map<String, String> initAndValidatePayload(CreateUserRequest userRequest) {
+
         Map<String, String> errors = new HashMap<>();
 
-        String name = request.getParameter("name");
-        if (StringUtils.isNotBlank(name)) {
-            userRequest.setName(name.trim());
-        } else {
+        if (StringUtils.isBlank(userRequest.getName())) {
             errors.put("name", "Name is required");
         }
 
-        String surname = request.getParameter("surname");
-        if (StringUtils.isNotBlank(surname)) {
-            userRequest.setSurname(surname.trim());
-        } else {
+        if (StringUtils.isBlank(userRequest.getSurname())) {
             errors.put("surname", "Surname is required");
         }
 
-        String email = request.getParameter("email");
-        if (!EmailValidation.valid(email)) {
+        if (!EmailValidation.valid(userRequest.getEmail())) {
             errors.put("email", "Try using valid email!");
         }
 
-        if (StringUtils.isNotBlank(email)) {
-            userRequest.setEmail(email.trim());
-        } else {
+        if (StringUtils.isBlank(userRequest.getEmail())) {
             errors.put("email", "Email is required");
         }
 
-        UserProfile profile = UserProfile.ofName(request.getParameter("profile"));
-        if (profile != null) {
-            userRequest.setProfile(profile);
-        } else {
-            errors.put("profile", "Profile is required");
+//        if (StringUtils.isBlank(userRequest.getProfile().getName())) {
+//            errors.put("profile", "Profile is required");
+//        }
+
+        if (StringUtils.isBlank(userRequest.getPassword())) {
+            errors.put("password", "Password is required");
         }
 
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirm-password");
+        if (StringUtils.isBlank(userRequest.getConfirmPassword())) {
+            errors.put("confirm-password", "Confirm password is required");
+        }
 
-        if (StringUtils.isNotBlank(password) && StringUtils.isNotBlank(confirmPassword)) {
-            if (password.equals(confirmPassword)) {
-                userRequest.setPassword(password);
-            } else {
+        if (StringUtils.isNotBlank(userRequest.getPassword()) && StringUtils.isNotBlank(userRequest.getConfirmPassword())) {
+            if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
                 errors.put("password", "Password and confirm password mismatches");
             }
-        } else {
-            if (StringUtils.isEmpty(password)) {
-                errors.put("password", "Password is required");
-            }
-            if (StringUtils.isEmpty(confirmPassword)) {
-                errors.put("confirm-password", "Confirm password is required");
-            }
         }
-        if (!errors.isEmpty()) {
-            request.setAttribute("errors", errors);
-        }
-        return userRequest;
+        return errors;
     }
 }

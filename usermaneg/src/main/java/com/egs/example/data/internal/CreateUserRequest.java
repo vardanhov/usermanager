@@ -9,6 +9,8 @@ public class CreateUserRequest {
 
     private String password;
 
+    private String confirmPassword;
+
     private UserProfile profile;
 
     private UserStatus status;
@@ -21,12 +23,14 @@ public class CreateUserRequest {
 
     public CreateUserRequest(String email,
                              String password,
+                             String confirmPassword,
                              UserProfile profile,
                              UserStatus status,
                              String name,
                              String surname ) {
         this.email = email;
         this.password = password;
+        this.confirmPassword=confirmPassword;
         this.profile = profile;
         this.status = status;
         this.name = name;
@@ -47,6 +51,14 @@ public class CreateUserRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public UserProfile getProfile() {
