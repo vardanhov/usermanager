@@ -36,7 +36,7 @@ public class RegisterController extends HttpServlet {
         userRequest.setPassword(request.getParameter("password"));
         userRequest.setConfirmPassword(request.getParameter("confirm-password"));
 
-        Map<String, String> isValid = initAndValidatePayload(userRequest);
+        Map<String, String> isValid = validate(userRequest);
         if (!isValid.isEmpty()) {
             request.setAttribute("errors", isValid);
             request.getRequestDispatcher("/register-view").forward(request, response);
@@ -57,7 +57,7 @@ public class RegisterController extends HttpServlet {
         }
     }
 
-    private Map<String, String> initAndValidatePayload(CreateUserRequest userRequest) {
+    private Map<String, String> validate(CreateUserRequest userRequest) {
 
         Map<String, String> errors = new HashMap<>();
 
@@ -77,9 +77,9 @@ public class RegisterController extends HttpServlet {
             errors.put("email", "Email is required");
         }
 
-//        if (StringUtils.isBlank(userRequest.getProfile().getName())) {
-//            errors.put("profile", "Profile is required");
-//        }
+        if (userRequest.getProfile()==null) {
+            errors.put("profile", "Profile is required");
+        }
 
         if (StringUtils.isBlank(userRequest.getPassword())) {
             errors.put("password", "Password is required");

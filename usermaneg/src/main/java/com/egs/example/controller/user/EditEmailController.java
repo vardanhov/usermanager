@@ -27,9 +27,9 @@ public class EditEmailController extends HttpServlet {
         String email = request.getParameter("email");
         String newEmail = request.getParameter("newEmail");
 
-        boolean isValid = validate(request, email, newEmail);
+        Map<String, String> isValid = validate( email, newEmail);
 
-        if (isValid) {
+        if (isValid.isEmpty()) {
             User userWithNewEmail = userService.getByEmail(newEmail);
             if (userWithNewEmail == null) {
                 userService.sendTokenChangeEmail(user, newEmail);
@@ -40,23 +40,21 @@ public class EditEmailController extends HttpServlet {
                 response.sendRedirect("/user/edit-email-view");
             }
         } else {
+               request.setAttribute("errors", isValid);
                 request.getRequestDispatcher("/user/edit-email-view").forward(request, response);
         }
     }
 
-    private boolean validate(HttpServletRequest request, String email, String newEmail) {
+    private Map<String, String> validate( String email, String newEmail) {
 
         Map<String, String> errors = new HashMap<>();
-        if (StringUtils.isEmpty(email)) {
+
+        if (StringUtils.isBlank(email)) {
             errors.put("email", "Old Email is required");
         }
-        if (StringUtils.isEmpty(newEmail)) {
+        if (StringUtils.isBlank(newEmail)) {
             errors.put("newEmail", "New Email is required");
         }
-        if (!errors.isEmpty()) {
-            request.setAttribute("errors", errors);
-            return false;
-        }
-        return true;
+        return errors;
     }
 }

@@ -25,9 +25,9 @@ public class ResetPasswordController extends HttpServlet {
         String oldPass = request.getParameter("oldPass");
         String newPass = request.getParameter("newPass");
         String confirmPass = request.getParameter("confirmPass");
-        boolean isValid = initAndValidate(request, oldPass, newPass, confirmPass);
+        Map<String, String> isValid = validate( oldPass, newPass, confirmPass);
 
-        if (isValid) {
+        if (isValid.isEmpty()) {
             if (user.getPassword().equals(oldPass)) {
                 userService.changePassword(user.getId(), newPass);
                 session.setAttribute("message", "Password changed successfully");
@@ -37,13 +37,16 @@ public class ResetPasswordController extends HttpServlet {
                 request.getRequestDispatcher("/user/reset-password-view").forward(request, response);
             }
         } else {
+            request.setAttribute("errors", isValid);
             request.getRequestDispatcher("/user/reset-password-view").forward(request, response);
 
         }
     }
 
-    boolean initAndValidate(HttpServletRequest request, String oldPass, String newPass, String confirmPass) {
+   private Map<String, String> validate( String oldPass, String newPass, String confirmPass) {
+
         Map<String, String> errors = new HashMap<>();
+
         if (StringUtils.isBlank(oldPass)) {
             errors.put("oldPass", "Old password is required");
         }
@@ -61,10 +64,6 @@ public class ResetPasswordController extends HttpServlet {
         if (errors.isEmpty() && oldPass.equals(newPass)) {
             errors.put("oldPass", "Old password and new password must be different");
         }
-
-        if (!errors.isEmpty()) {
-            request.setAttribute("errors", errors);
-        }
-        return errors.isEmpty();
+        return errors;
     }
 }

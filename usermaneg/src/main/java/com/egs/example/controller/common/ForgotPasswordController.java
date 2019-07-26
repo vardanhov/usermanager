@@ -44,7 +44,7 @@ public class ForgotPasswordController extends HttpServlet {
         }
     }
 
-    private static boolean initAndValidate(HttpServletRequest request, String newPass, String confirmPass) {
+    private  boolean initAndValidate(HttpServletRequest request, String newPass, String confirmPass) {
         Map<String, String> errors = new HashMap<>();
 
         if (StringUtils.isBlank(newPass)) {
